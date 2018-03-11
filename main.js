@@ -13,7 +13,13 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 800,
+    height: 600,
+    transparent: true,
+    frame: false,
+    toolbar: false,
+    icon: "assets/ico/appicon.png"
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
