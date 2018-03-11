@@ -1,3 +1,14 @@
 html, body {
     background: rgba(0, 0, 0, 0);
 }
+
+#centerCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.generic_ui {
+  transform: scale(66%, 66%);
+}
