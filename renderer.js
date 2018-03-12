@@ -12,6 +12,7 @@ var imageMap = {
 
 const protonAPI = require('./protonAPI.js');
 const appSettings = require('./appSettings.js');
+const geom = require( './geometry.js');
 
 function animate() {
   // call again next time we can draw
@@ -26,7 +27,7 @@ function animate() {
 }
 
 function drawCenterCircle() {
-  var centerCirclePt = protonAPI.centerObject(new Rectangle(imageMap.centerCicle.width, imageMap.centerCicle.height), new Rectangle(cvWidth, cvHeight));
+  var centerCirclePt = protonAPI.centerObject(new geom.Rectangle(imageMap.centerCicle.width, imageMap.centerCicle.height), new geom.Rectangle(cvWidth, cvHeight));
   ctx.drawImage(imageMap.centerCicle, centerCirclePt.x, centerCirclePt.y,
     imageMap.centerCicle.width * appSettings.screenRatio, imageMap.centerCicle.height * appSettings.screenRatio);
   ctx.fillRect(200,200,100,100);
