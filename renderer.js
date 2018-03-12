@@ -21,7 +21,7 @@ function animate() {
     ctx.clearRect(0, 0, cvWidth, cvHeight);
     drawCenterCircle();
     ctx.fillStyle = '#ff0000';
-
+    
     protonAPI.sleep(16); // Limit to 60fps
   }
 }
