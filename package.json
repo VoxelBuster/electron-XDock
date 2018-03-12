@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
+  "name": "electron-XDock",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Electron desktop dock with Java backend and plugins",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -9,12 +9,11 @@
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "java",
+    "desktop",
+    "dock"
   ],
-  "author": "GitHub",
+  "author": "VoxelBuster",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "~1.8.2"
