@@ -62,5 +62,5 @@ function drawCenterCircle() {
   ctx.shadowBlur = 10;
   ctx.font = format("bold {0}px 'Software Tester'", 152 * screenRatio);
   ctx.fillStyle = "#00fbfe";
-  // ctx.fillText(format("{0}:{1}", hr, min), centerPt.x, centerPt.y);
+  ctx.fillText(format("{0}:{1}", hr, min), centerPt.x, centerPt.y);
 }
