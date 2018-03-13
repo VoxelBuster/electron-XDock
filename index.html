@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <script src="scripts/jquery.min.js"></script>
     <script src="appSettings.js"></script> 
-    <link rel="stylesheet" type="text/css" href="theme.css">
+    <link rel="stylesheet" type="text/css" href="styles/theme.css">
     <title>ElectronXDock</title>
   </head>
   <body>
     <canvas id="dockCanvas" width="1280" height="720"></canvas>
     <!--<h1>TEST</h1>-->
     <img id="centerCircle" src="assets/ui/centercircle.png" hidden="true">
+    <img id="gear" src="assets/ui/gear.png" hidden="true">
+    <img id="centerBatteryFg" src="assets/ui/center_battery_fg.png" hidden="true">
+    <img id="centerMenuBg" src="assets/ui/center_menu_bg.png" hidden="true">
+    <img id="centerMenuSelect" src="assets/ui/center_menu_select.png" hidden="true">
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')

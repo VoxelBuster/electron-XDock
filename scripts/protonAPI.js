@@ -1,4 +1,4 @@
-var geom = require('./geometry.js');
+var paper = require('paper');
 
 function calcRot(centerPt, targetPt) {
   var theta = Math.atan2(targetPt.y - centerPt.y, targetPt.x - centerPt.x) + Math.PI/2.0;
@@ -10,7 +10,7 @@ function calcRot(centerPt, targetPt) {
 }
 
 function centerObject(childObj, parentObj) {
-    return new geom.Point(parentObj.width / 2 - childObj.width / 2, parentObj.height / 2 - childObj.height / 2);
+    return new paper.Point(parentObj.width / 2 - childObj.width / 2, parentObj.height / 2 - childObj.height / 2);
 }
 
 function sleep(ms) {

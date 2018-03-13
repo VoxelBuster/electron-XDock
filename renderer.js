@@ -1,12 +1,12 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-var imageMap;
+var imageMap, animations;
 
-const protonAPI = require('./protonAPI.js');
-// const appSettings = require('./appSettings.js');
-const geom = require( './geometry.js');
+const protonAPI = require('./scripts/protonAPI.js');
+const anim = require('./scripts/GUIAnimator.js');
 const $ = require('jQuery');
+const paper = require('paper');
 
 var dockCanvas, ctx, cvWidth, cvHeight;
 
@@ -21,8 +21,13 @@ $(document).ready(function() {
 
 function preprocessImages() {
   imageMap = {
-    centerCircle: document.getElementById('centerCircle')
+    centerCircle: document.getElementById('centerCircle'),
+    centerBatteryFg: document.getElementById('centerBatteryFg')
   };
+
+  animations = {
+    centerBatteryFg: new anim.GUIAnimator(60)
+  }
 
   imageMap.centerCircle.width *= screenRatio;
   imageMap.centerCircle.height *= screenRatio;
@@ -40,6 +45,8 @@ function animate() {
 }
 
 function drawCenterCircle() {
-  var centerCirclePt = protonAPI.centerObject(new geom.Rectangle(0,0,imageMap.centerCircle.width, imageMap.centerCircle.height), new geom.Rectangle(0,0,cvWidth, cvHeight));
-  ctx.drawImage(imageMap.centerCircle, centerCirclePt.x, centerCirclePt.y, imageMap.centerCircle.width, imageMap.centerCircle.height);
+  var ccRect = new paper.Rectangle(0,0,imageMap.centerCircle.width, imageMap.centerCircle.height);
+  var centerCirclePt = protonAPI.centerObject(ccRect, new paper.Rectangle(0,0,cvWidth, cvHeight));
+  ctx.drawImage(imageMap.centerCircle, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
+  ctx.drawImage(imageMap.centerBatteryFg, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
 }
