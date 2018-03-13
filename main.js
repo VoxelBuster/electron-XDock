@@ -11,8 +11,8 @@ function createWindow () {
   win = new BrowserWindow({
     width: 1920,
     height: 1080,
-    transparent: false,
-    frame: true,
+    transparent: true,
+    frame: false,
     toolbar: false,
     icon: "assets/ico/appicon.png",
     webPreferences:  {
@@ -27,7 +27,7 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
