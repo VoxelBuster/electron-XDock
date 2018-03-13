@@ -2,16 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <script src="scripts/jquery.min.js"></script> 
+    <script src="scripts/jquery.min.js"></script>
+    <script src="appSettings.js"></script> 
     <link rel="stylesheet" type="text/css" href="theme.css">
     <title>ElectronXDock</title>
   </head>
   <body>
     <canvas id="dockCanvas" width="1280" height="720"></canvas>
-    <h1>TEST</h1>
-    <div id="images" hidden="true">
-      <img id="centerCicle" src="assets/ui/centercircle.png">
-    </div>
+    <!--<h1>TEST</h1>-->
+    <img id="centerCircle" src="assets/ui/centercircle.png" hidden="true">
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
