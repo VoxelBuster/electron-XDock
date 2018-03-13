@@ -11,6 +11,11 @@ html, body {
   transform: translate(-50%, -50%);
 }
 
+@font-face {
+  font-family: 'Software Tester';
+  src: url('../assets/font/monospace.ttf') format('truetype');
+}
+
 .generic_ui {
   transform: scale(0.66);
 }

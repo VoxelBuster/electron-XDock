@@ -5,8 +5,9 @@ var imageMap, animations;
 
 const protonAPI = require('./scripts/protonAPI.js');
 const anim = require('./scripts/GUIAnimator.js');
-const $ = require('jQuery');
+const $ = require('jquery');
 const paper = require('paper');
+const format = require('string-format');
 
 var dockCanvas, ctx, cvWidth, cvHeight;
 
@@ -40,7 +41,7 @@ function animate() {
   ctx.clearRect(0, 0, cvWidth, cvHeight);
   drawCenterCircle();
 
-  ctx.fillStyle = '#ff0000';
+  ctx.imageSmoothingEnabled = false;
   protonAPI.sleep(16); // Limit to 60fps
 }
 
@@ -49,4 +50,17 @@ function drawCenterCircle() {
   var centerCirclePt = protonAPI.centerObject(ccRect, new paper.Rectangle(0,0,cvWidth, cvHeight));
   ctx.drawImage(imageMap.centerCircle, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
   ctx.drawImage(imageMap.centerBatteryFg, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
+
+  // Draw time string
+  var centerPt = new paper.Point(cvWidth / 2, cvHeight / 2);
+  var d = new Date();
+  var sec = d.getSeconds(), min = d.getMinutes(), hr = d.getHours();
+
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.shadowColor = "#00fbfe";
+  ctx.shadowBlur = 10;
+  ctx.font = format("bold {0}px 'Software Tester'", 152 * screenRatio);
+  ctx.fillStyle = "#00fbfe";
+  ctx.fillText(format("{0}:{1}", hr, min), centerPt.x, centerPt.y);
 }
