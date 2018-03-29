@@ -41,7 +41,9 @@ function animate() {
   ctx.clearRect(0, 0, cvWidth, cvHeight);
   ctx.fillStyle = "rgba(0,0,0,0)";
   ctx.imageSmoothingEnabled = false;
+  ctx.beginPath();
   drawCenterCircle();
+  ctx.closePath();
   protonAPI.sleep(16); // Limit to 60fps
 }
 
@@ -62,5 +64,6 @@ function drawCenterCircle() {
   ctx.shadowBlur = 10;
   ctx.font = format("bold {0}px 'Software Tester'", 152 * screenRatio);
   ctx.fillStyle = "#00fbfe";
-  ctx.fillText(format("{0}:{1}", hr, min), centerPt.x, centerPt.y);
+  ctx.fillText(format("{0}:{1}", hr.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}),
+  min.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})), centerPt.x, centerPt.y);
 }

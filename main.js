@@ -6,6 +6,12 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
+const appSettings = require('./appSettings.js');
+
+if (!appSettings.hwAccel) {
+  app.disableHardwareAcceleration();
+}
+
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
