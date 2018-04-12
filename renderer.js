@@ -57,7 +57,7 @@ function drawCenterCircle() {
   // Draw time string
   var centerPt = new paper.Point(cvWidth / 2, cvHeight / 2);
   var d = new Date();
-  var sec = d.getSeconds(), min = d.getMinutes(), hr = d.getHours();
+  var sec = d.getSeconds(), min = d.getMinutes(), hr = d.getHours() % 12;
 
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'center';
