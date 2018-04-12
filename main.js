@@ -42,6 +42,9 @@ function createWindow () {
     // when you should delete the corresponding element.
     win = null
   })
+
+  const protonService = require('./scripts/protonService.js');
+  protonService.init();
 }
 
 // This method will be called when Electron has finished

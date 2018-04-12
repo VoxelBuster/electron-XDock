@@ -1,0 +1,2 @@
+Uriopass: https://github.com/Uriopass/audio-analysis
+java-native-access: https://github.com/java-native-access/jna - jna-4.5.1.jar, jna-platform-4.5.1.jar
