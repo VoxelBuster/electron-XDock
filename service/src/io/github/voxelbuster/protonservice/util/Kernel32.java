@@ -1,4 +1,4 @@
-package io.github.voxelbuster.winxdock.util;
+package io.github.voxelbuster.protonservice.util;
 
 import java.util.ArrayList;
 import java.util.List;

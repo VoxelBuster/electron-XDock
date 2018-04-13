@@ -1,4 +1,4 @@
-package io.github.voxelbuster.winxdock.audio;
+package io.github.voxelbuster.protonservice.audio;
 
 import com.badlogic.audio.analysis.FFT;
 import com.badlogic.audio.io.AudioDevice;

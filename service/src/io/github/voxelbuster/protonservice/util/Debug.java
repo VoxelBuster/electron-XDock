@@ -1,4 +1,4 @@
-package io.github.voxelbuster.winxdock.util;
+package io.github.voxelbuster.protonservice.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

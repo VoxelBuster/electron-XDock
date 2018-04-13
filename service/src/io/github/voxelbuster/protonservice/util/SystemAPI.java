@@ -1,4 +1,4 @@
-package io.github.voxelbuster.winxdock.util;
+package io.github.voxelbuster.protonservice.util;
 
 import com.sun.deploy.util.WinRegistry;
 
