@@ -27,5 +27,9 @@ public class Main {
 
         Debug.log("Launching server socket");
         ProtonSocket ps = new ProtonSocket();
+
+        while (!ps.isDead()) {
+
+        }
     }
 }

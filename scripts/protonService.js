@@ -1,16 +1,26 @@
 const net = require('net');
+const protonAPI = require('./protonAPI.js');
 
 var client = new net.Socket();
+
+var dataInBuffer = '';
 
 function init() {
     client.connect(19700, '127.0.0.1', function() {
     	console.log('Connected to protonService');
-    	//client.write('');
+      protonAPI.sleep(500);
+      client.write('quit'.toString('utf8'));
+      client.end();
     });
 }
 
 client.on('data', function(data) {
-  // Recieve data from server
+  if (data != '\n') {
+    dataInBuffer = dataInBuffer + data;
+  } else {
+    console.log('data_recv: ' + dataInBuffer + '\r\n');
+    dataInBuffer = '';
+  }
 });
 
 client.on('close', function() {
