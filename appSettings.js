@@ -7,6 +7,7 @@ var time12Hr = true;
 
 // Graphics Settings
 var screenRatio = 1; // How much of the screen should the dock take up--relative to full screen
+var fps = 60;
 var doubleBuffer = false, textGlow = true, fpsCounter = true;
 var background = false, useBgImage = true;
 var bgColor = '#000000';

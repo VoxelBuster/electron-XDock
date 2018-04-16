@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 public class Debug {
     private static Logger log;
     static {
-        log = Logger.getLogger("WinXDock");
+        log = Logger.getLogger("protonService");
         if (AppSettings.debug) {
             Logger.getGlobal().setLevel(Level.FINE);
             log.setLevel(Level.FINE);

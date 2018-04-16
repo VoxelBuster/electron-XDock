@@ -1,4 +1,5 @@
 var paper = require('paper');
+var app = require('../main.js').app;
 
 function calcRot(centerPt, targetPt) {
   var theta = Math.atan2(targetPt.y - centerPt.y, targetPt.x - centerPt.x) + Math.PI/2.0;
@@ -14,9 +15,15 @@ function centerObject(childObj, parentObj) {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return setTimeout(function(){},ms);
+}
+
+function quit() {
+  app.quit();
 }
 
 module.exports.calcRot = calcRot;
 module.exports.centerObject = centerObject;
 module.exports.sleep = sleep;
+module.exports.quit = quit;
+module.exports.exit = quit;

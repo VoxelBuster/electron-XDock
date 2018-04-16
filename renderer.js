@@ -12,6 +12,8 @@ const format = require('string-format');
 
 var dockCanvas, ctx, cvWidth, cvHeight;
 
+var currentFrame = 0;
+
 $(document).ready(function() {
   dockCanvas = document.getElementById('dockCanvas');
   ctx = dockCanvas.getContext('2d');
@@ -45,7 +47,16 @@ function animate() {
   ctx.beginPath();
   drawCenterCircle();
   ctx.closePath();
-  protonAPI.sleep(16); // Limit to 60fps
+  protonAPI.sleep(1000/appSettings.fps); // Limit to 60fps
+  if (currentFrame == 30) {
+    protonService.updateBattery();
+  }
+
+  if (currentFrame < appSettings.fps) {
+    currentFrame++;
+  } else {
+    currentFrame = 0;
+  }
 }
 
 function drawCenterCircle() {
@@ -58,6 +69,10 @@ function drawCenterCircle() {
   var centerPt = new paper.Point(cvWidth / 2, cvHeight / 2);
   var d = new Date();
   var sec = d.getSeconds(), min = d.getMinutes(), hr = d.getHours() % 12;
+
+  if (hr == 0) {
+    hr = 12;
+  }
 
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'center';

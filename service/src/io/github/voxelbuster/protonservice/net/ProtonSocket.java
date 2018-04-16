@@ -2,10 +2,10 @@ package io.github.voxelbuster.protonservice.net;
 
 import io.github.voxelbuster.protonservice.util.AppSettings;
 import io.github.voxelbuster.protonservice.util.Debug;
+import io.github.voxelbuster.protonservice.util.SystemAPI;
+import org.json.simple.JSONObject;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,31 +16,33 @@ public class ProtonSocket {
 
     private Socket socket;
 
-    private DataInputStream serverIS;
+    private BufferedReader serverIS;
     private DataOutputStream serverOS;
 
     public ProtonSocket() throws IOException {
         socket = serverSock.accept();
-        serverIS = new DataInputStream(socket.getInputStream());
+        serverIS = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         serverOS = new DataOutputStream(socket.getOutputStream());
 
         ArrayList<String> outBuffer = new ArrayList<>();
 
         if (socket.isConnected()) {
+            Debug.log("Connected to client");
             serverOS.writeUTF("svc-conn\n"); // TODO finish protocol
             Thread inThread = new Thread(() -> {
                 while (!ProtonSocket.this.isDead()) {
                     try {
                         Thread.sleep(5);
-                        String inp = serverIS.readUTF();
+                        if (!serverIS.ready()) continue;
+                        String inp = serverIS.readLine();
                         String[] buffer = inp.split("\n");
                         for (String msg : buffer) {
-                            if (msg.equals("get batStat")) {
-                                // TODO send battery status json
+                            Debug.log("data_recv: " + msg);
+                            if (msg.contains("get batStat")) {
+                                outBuffer.add("batStat;" + genBatteryData());
                             } else if (msg.equals("quit")) {
                                 Debug.log("Client requested service shutdown...");
-                                socket.shutdownInput();
-                                socket.shutdownOutput();
+                                socket.close();
                             }
                         }
                     } catch (Exception e) {
@@ -53,10 +55,9 @@ public class ProtonSocket {
                 while (!ProtonSocket.this.isDead()) {
                     try {
                         Thread.sleep(5);
-                        for (int i=outBuffer.size()-1;i>-1;i--) { // Longest waiting output is bottom of the list, most recent is 0.
-                            serverOS.writeChars(outBuffer.remove(i));
+                        while (!outBuffer.isEmpty()) {
+                            serverOS.writeUTF(outBuffer.remove(0)); // Remove the top element until empty
                         }
-                        serverOS.writeChars("test\n");
                     } catch (Exception e) {
                         Debug.error("Exception in service output thread:");
                         e.printStackTrace();
@@ -77,8 +78,16 @@ public class ProtonSocket {
         }
     }
 
+    private String genBatteryData() {
+        JSONObject root = new JSONObject();
+        root.put("batteryLife", SystemAPI.getBattery());
+        root.put("isCharging", SystemAPI.isCharging());
+        root.put("hasBattery", SystemAPI.hasBattery());
+        return root.toJSONString();
+    }
+
     public boolean isDead() {
-        if (socket.isOutputShutdown() && socket.isInputShutdown()) {
+        if ((socket.isOutputShutdown() && socket.isInputShutdown()) || socket.isClosed()) {
             return true;
         } else {
             return false;

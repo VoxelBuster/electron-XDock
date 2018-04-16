@@ -1,6 +1,8 @@
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
-const url = require('url')
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const url = require('url');
+const path = require('path');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -56,6 +58,8 @@ app.on('ready', createWindow)
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  const ps = require('./scripts/protonService.js');
+  ps.disconnect();
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -68,3 +72,5 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+module.exports.app = app;
