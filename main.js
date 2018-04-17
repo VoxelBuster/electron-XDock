@@ -3,12 +3,16 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const url = require('url');
 const path = require('path');
+const ps = require('./scripts/protonService.js');
+const api = require('./scripts/protonAPI.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
 const appSettings = require('./appSettings.js');
+
+api.sleep(500);
 
 if (!appSettings.hwAccel) {
   app.disableHardwareAcceleration();
@@ -45,8 +49,7 @@ function createWindow () {
     win = null
   })
 
-  const protonService = require('./scripts/protonService.js');
-  protonService.init();
+  ps.init();
 }
 
 // This method will be called when Electron has finished
@@ -58,7 +61,6 @@ app.on('ready', createWindow)
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  const ps = require('./scripts/protonService.js');
   ps.disconnect();
   if (process.platform !== 'darwin') {
     app.quit()
