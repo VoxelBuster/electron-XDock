@@ -1,6 +1,6 @@
-const electron = require('electron')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
 const url = require('url');
 const path = require('path');
 const ps = require('./scripts/protonService.js');
@@ -8,7 +8,15 @@ const api = require('./scripts/protonAPI.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
+
+function chron() {
+  setInterval(function () {
+    if (ps.isConnected()) {
+      ps.updateBattery();
+    }
+  }, 500);
+}
 
 const appSettings = require('./appSettings.js');
 
@@ -27,14 +35,14 @@ function createWindow () {
     icon: "assets/ico/appicon.png",
     webPreferences:  {
       webSecurity: false
-    }})
+    }});
 
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
-  }))
+  }));
 
   // Open the DevTools.
   // win.webContents.openDevTools()
@@ -45,15 +53,16 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     win = null
-  })
+  });
 
   ps.init();
+  chron();
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -63,7 +72,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
-})
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -71,6 +80,4 @@ app.on('activate', () => {
   if (win === null) {
     createWindow()
   }
-})
-
-module.exports.app = app;
+});

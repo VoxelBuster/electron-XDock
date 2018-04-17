@@ -1,42 +1,47 @@
 function GUIAnimator(frames) {
     this.maxFrames = frames;
+    this.reverse = false;
+    this.loop = false;
+    this.freeze = false;
+    this.currentFrame = 0;
+    this.frozenFrame = 0;
     this.advance = function() {
-       if (reverse) {
-           currentFrame--;
-           if (currentFrame < 0) {
-               if (loop) {
-                   currentFrame = maxFrames - 1;
+       if (this.reverse) {
+           this.currentFrame--;
+           if (this.currentFrame < 0) {
+               if (this.loop) {
+                   this.currentFrame = this.maxFrames - 1;
                } else {
-                   currentFrame++;
+                   this.currentFrame++;
                }
            }
        } else {
-           currentFrame++;
-           if (currentFrame >= maxFrames - 1) {
-               if (loop) {
-                   currentFrame = 0;
+           this.currentFrame++;
+           if (this.currentFrame >= this.maxFrames - 1) {
+               if (this.loop) {
+                   this.currentFrame = 0;
                } else {
-                   currentFrame--;
+                   this.currentFrame--;
                }
            }
        }
-       if (!freeze) {
-           frozenFrame = currentFrame;
-           return currentFrame;
+       if (!this.freeze) {
+           this.frozenFrame = this.currentFrame;
+           return this.currentFrame;
        } else {
-           return frozenFrame;
+           return this.frozenFrame;
        }
    }
 
    this.setFrame = function(i) {
-       if (i >= maxFrames) {
-           return currentFrame;
+       if (i >= this.maxFrames) {
+           return this.currentFrame;
        }
-       currentFrame = i;
-       if (!freeze) {
-           frozenFrame = currentFrame;
+       this.currentFrame = i;
+       if (!this.freeze) {
+           this.frozenFrame = this.currentFrame;
        }
-       return currentFrame;
+       return this.currentFrame;
    }
 
     this.setReverse = function(flag) {
@@ -48,10 +53,10 @@ function GUIAnimator(frames) {
     }
 
     this.getCurrentFrame = function() {
-        if (!freeze) {
-            return currentFrame;
+        if (!this.freeze) {
+            return this.currentFrame;
         } else {
-            return frozenFrame;
+            return this.frozenFrame;
         }
     }
 

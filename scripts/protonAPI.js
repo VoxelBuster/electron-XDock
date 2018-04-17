@@ -1,5 +1,5 @@
-var paper = require('paper');
-var app = require('electron').app;
+const paper = require('paper');
+const app = require('electron').app;
 
 function calcRot(centerPt, targetPt) {
   var theta = Math.atan2(targetPt.y - centerPt.y, targetPt.x - centerPt.x) + Math.PI/2.0;
@@ -14,8 +14,8 @@ function centerObject(childObj, parentObj) {
     return new paper.Point(parentObj.width / 2 - childObj.width / 2, parentObj.height / 2 - childObj.height / 2);
 }
 
-function sleep(ms) {
-  return setTimeout(function(){},ms);
+function sleep(ms,callback=function(){}) {
+  return setTimeout(callback,ms);
 }
 
 function quit() {

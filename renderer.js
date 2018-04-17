@@ -5,7 +5,7 @@ var imageMap, animations;
 
 const protonAPI = require('./scripts/protonAPI.js');
 const anim = require('./scripts/GUIAnimator.js');
-const protonService = require('./scripts/protonService.js');
+const ps = require('./scripts/protonService.js');
 const appSettings = require('./appSettings.js');
 const $ = require('jquery');
 const paper = require('paper');
@@ -34,6 +34,8 @@ function preprocessImages() {
     centerBatteryFg: new anim.GUIAnimator(60)
   }
 
+  animations.centerBatteryFg.loop = true;
+
   imageMap.centerCircle.width *= screenRatio;
   imageMap.centerCircle.height *= screenRatio;
 }
@@ -49,22 +51,27 @@ function animate() {
   drawCenterCircle();
   ctx.closePath();
   protonAPI.sleep(1000/appSettings.fps); // Limit to 60fps
-  if (currentFrame == 30) {
-    protonService.updateBattery();
-  }
 
-  if (currentFrame < appSettings.fps) {
-    currentFrame++;
-  } else {
-    currentFrame = 0;
-  }
+  //update animations
+  animations.centerBatteryFg.advance();
 }
 
 function drawCenterCircle() {
   var ccRect = new paper.Rectangle(0,0,imageMap.centerCircle.width, imageMap.centerCircle.height);
   var centerCirclePt = protonAPI.centerObject(ccRect, new paper.Rectangle(0,0,cvWidth, cvHeight));
   ctx.drawImage(imageMap.centerCircle, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
-  ctx.drawImage(imageMap.centerBatteryFg, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
+  // Do animation math
+  var batteryCrop = ((ccRect.height / 2) * (1-ps.lastBatteryReading)) + 256;
+  console.log(ps.lastBatteryReading);
+  if (ps.isCharging) {
+    ctx.globalAlpha = ((animations.centerBatteryFg.getCurrentFrame() + 1) % 30) / 30;
+    if (animations.centerBatteryFg.getCurrentFrame() >= 30) {
+      ctx.globalAlpha = ctx.globalAlpha * -1;
+    }
+  }
+  // Draw the battery bar
+  ctx.drawImage(imageMap.centerBatteryFg, 0, batteryCrop, ccRect.width, ccRect.height - batteryCrop, centerCirclePt.x, centerCirclePt.y + batteryCrop, ccRect.width, ccRect.height - batteryCrop);
+  ctx.globalAlpha = 1;
 
   // Draw time string
   var centerPt = new paper.Point(cvWidth / 2, cvHeight / 2);

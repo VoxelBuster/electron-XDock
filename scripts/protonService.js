@@ -1,7 +1,7 @@
 const net = require('net');
 const protonAPI = require('./protonAPI.js');
 const { StringDecoder } = require('string_decoder');
-
+const globals = require('./globals.js');
 const decoder = new StringDecoder('utf8');
 
 while (net == undefined || protonAPI == undefined) {}
@@ -10,18 +10,21 @@ var client = new net.Socket();
 
 var dataInBuffer = '', lastBatteryJSON = {};
 var retries = 0;
-
-var lastBatteryReading = 0, hasBattery = true, isCharging = true;
-var installedGames = [], installedApps = [], songs = [];
+var connected = false;
 
 function init() {
       client.connect(19700, 'localhost', function() {
+        connected = true;
       	console.log('Connected to protonService');
         client.write('get batStat\n');
       });
 }
 
-client.on('data', function(data) {
+client.on('close', function() {
+	protonAPI.quit();
+});
+
+client.on('data', (data) => {
   var array = [...data];
   array.splice(0,2);
   for (var i=0;i<array.length;i++) {
@@ -29,14 +32,12 @@ client.on('data', function(data) {
   }
   console.log(dataInBuffer);
   if (dataInBuffer.startsWith('batStat')) {
-    lastBatteryJSON = JSON.parse(dataInBuffer.split(';')[1]);
-
+    let lastBatteryJSON = JSON.parse(dataInBuffer.split(';')[1]);
+    module.exports.lastBatteryReading = parseFloat(lastBatteryJSON.batteryLife);
+    module.exports.hasBattery = lastBatteryJSON.hasBattery == 'true';
+    module.exports.isCharging = lastBatteryJSON.isCharging == 'true';
   }
   dataInBuffer = '';
-});
-
-client.on('close', function() {
-	protonAPI.quit();
 });
 
 client.on('error', function(err) {
@@ -54,18 +55,26 @@ client.on('error', function(err) {
 
 function disconnect() {
   client.end('quit');
+  connected = false;
+}
+
+function isConnected() {
+  return connected;
 }
 
 function updateBattery() {
   client.write('get batStat\n');
 }
 
-module.exports.lastBatteryReading = lastBatteryReading;
-module.exports.hasBattery = hasBattery;
-module.exports.isCharging = isCharging;
-module.exports.installedGames = installedGames;
-module.exports.installedApps = installedApps;
-module.exports.songs = songs;
+module.exports.lastBatteryReading = 0;
+module.exports.hasBattery = true;
+module.exports.isCharging = false;
+
+module.exports.installedGames = {};
+module.exports.installedApps = {};
+module.exports.songs = {};
 
 module.exports.init = init;
 module.exports.disconnect = disconnect;
+module.exports.isConnected = isConnected;
+module.exports.updateBattery = updateBattery;
