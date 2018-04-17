@@ -1,5 +1,5 @@
 var paper = require('paper');
-var app = require('../main.js').app;
+var app = require('electron').app;
 
 function calcRot(centerPt, targetPt) {
   var theta = Math.atan2(targetPt.y - centerPt.y, targetPt.x - centerPt.x) + Math.PI/2.0;

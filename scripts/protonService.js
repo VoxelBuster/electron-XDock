@@ -4,6 +4,8 @@ const { StringDecoder } = require('string_decoder');
 
 const decoder = new StringDecoder('utf8');
 
+while (net == undefined || protonAPI == undefined) {}
+
 var client = new net.Socket();
 
 var dataInBuffer = '', lastBatteryJSON = {};
@@ -38,6 +40,7 @@ client.on('close', function() {
 });
 
 client.on('error', function(err) {
+  console.log('Service socket error!')
   console.log(err);
   if (err.code == 'ECONNREFUSED') {
     console.log('Could not establish connection to service. Aborting app.');

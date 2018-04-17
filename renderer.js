@@ -6,6 +6,7 @@ var imageMap, animations;
 const protonAPI = require('./scripts/protonAPI.js');
 const anim = require('./scripts/GUIAnimator.js');
 const protonService = require('./scripts/protonService.js');
+const appSettings = require('./appSettings.js');
 const $ = require('jquery');
 const paper = require('paper');
 const format = require('string-format');

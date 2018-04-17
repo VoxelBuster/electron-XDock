@@ -12,8 +12,6 @@ let win
 
 const appSettings = require('./appSettings.js');
 
-api.sleep(500);
-
 if (!appSettings.hwAccel) {
   app.disableHardwareAcceleration();
 }
