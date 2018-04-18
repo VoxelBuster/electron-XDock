@@ -1,3 +1,7 @@
 node_modules
 geometry.js
 service/\.idea/workspace\.xml
+
+service/out/
+
+*.pyc
