@@ -28,7 +28,6 @@ public class ProtonSocket {
 
         if (socket.isConnected()) {
             Debug.log("Connected to client");
-            serverOS.writeUTF("svc-conn\n"); // TODO finish protocol
             Thread inThread = new Thread(() -> {
                 while (!ProtonSocket.this.isDead()) {
                     try {

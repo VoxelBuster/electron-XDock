@@ -62,7 +62,6 @@ function drawCenterCircle() {
   ctx.drawImage(imageMap.centerCircle, centerCirclePt.x, centerCirclePt.y, ccRect.width, ccRect.height);
   // Do animation math
   var batteryCrop = ((ccRect.height / 2) * (1-ps.lastBatteryReading)) + 256;
-  console.log(ps.lastBatteryReading);
   if (ps.isCharging) {
     ctx.globalAlpha = ((animations.centerBatteryFg.getCurrentFrame() + 1) % 30) / 30;
     if (animations.centerBatteryFg.getCurrentFrame() >= 30) {
