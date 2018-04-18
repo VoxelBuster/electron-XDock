@@ -24,22 +24,6 @@ client.on('close', function() {
 	protonAPI.quit();
 });
 
-client.on('data', (data) => {
-  var array = [...data];
-  array.splice(0,2);
-  for (var i=0;i<array.length;i++) {
-    dataInBuffer = dataInBuffer + String.fromCharCode(array[i]);
-  }
-  console.log(dataInBuffer);
-  if (dataInBuffer.startsWith('batStat')) {
-    let lastBatteryJSON = JSON.parse(dataInBuffer.split(';')[1]);
-    module.exports.lastBatteryReading = parseFloat(lastBatteryJSON.batteryLife);
-    module.exports.hasBattery = lastBatteryJSON.hasBattery == 'true';
-    module.exports.isCharging = lastBatteryJSON.isCharging == 'true';
-  }
-  dataInBuffer = '';
-});
-
 client.on('error', function(err) {
   console.log('Service socket error!')
   console.log(err);
@@ -63,12 +47,28 @@ function isConnected() {
 }
 
 function updateBattery() {
+  let resolveObj;
   client.write('get batStat\n');
+    client.on('data', (data) => {
+      var array = [...data];
+      array.splice(0,2);
+      for (let i=0;i<array.length;i++) {
+        dataInBuffer = dataInBuffer + String.fromCharCode(array[i]);
+      }
+      console.log(dataInBuffer);
+      const {
+        hasBattery,
+        isCharging,
+        batteryLife,
+      } = JSON.parse(dataInBuffer.split(';')[1]);
+      resolveObj = {
+        hasBattery: hasBattery === 'true',
+        isCharging: isCharging === 'true',
+        lastBatteryReading: Number(batteryLife),
+      };
+      dataInBuffer = '';
+    });
 }
-
-module.exports.lastBatteryReading = 0;
-module.exports.hasBattery = true;
-module.exports.isCharging = false;
 
 module.exports.installedGames = {};
 module.exports.installedApps = {};
