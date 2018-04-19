@@ -13,6 +13,7 @@ textGlow = True
 fpsCounter = True
 background = False
 useBgImage = True
+useWinBg = False
 bgColor = '#000000'
 bgImage = 'assets/ui/default-bg.jpg'
 hwAccel = False

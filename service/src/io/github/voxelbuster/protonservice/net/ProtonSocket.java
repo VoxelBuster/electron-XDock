@@ -19,8 +19,6 @@ public class ProtonSocket {
     private BufferedReader serverIS;
     private DataOutputStream serverOS;
 
-    float bl = 0;
-
     public ProtonSocket() throws IOException {
         socket = serverSock.accept();
         serverIS = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -30,6 +28,7 @@ public class ProtonSocket {
 
         if (socket.isConnected()) {
             Debug.log("Connected to client");
+            outBuffer.add("winBg;" + SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper"));
             Thread inThread = new Thread(() -> {
                 while (!ProtonSocket.this.isDead()) {
                     try {
@@ -81,10 +80,9 @@ public class ProtonSocket {
 
     private String genBatteryData() {
         JSONObject root = new JSONObject();
-        root.put("batteryLife", bl);
+        root.put("batteryLife", SystemAPI.getBattery());
         root.put("isCharging", SystemAPI.isCharging());
         root.put("hasBattery", SystemAPI.hasBattery());
-        bl += 0.02;
         return root.toJSONString();
     }
 

@@ -17,7 +17,7 @@ imageMap = {}
 fontsMap = {}
 
 def loadImage(imgid):
-    imageMap[imgid] = pygame.image.load(images[imgid])
+    imageMap[imgid] = pygame.image.load(images[imgid]).convert_alpha()
 
 def loadFont(fid, size):
     fontsMap[fid] = pygame.font.Font(fonts[fid], size)
