@@ -37,13 +37,14 @@ except:
     exit(7)
 print 'Connected on port 19700'
 client.setblocking(1)
-client.settimeout(0.05)
+client.settimeout(1/appSettings.fpsMax)
 
 print 'Loading core assets'
 assetLoader.loadImage('centercircle')
 assetLoader.loadImage('center_battery_fg')
 
 assetLoader.loadFont('header', 96)
+assetLoader.loadFont('monospace', 36)
 bgImage = None
 
 if appSettings.useBgImage:
@@ -103,6 +104,7 @@ animations['batteryBar'].loop = True
 tempSurf = assetLoader.imageMap['centercircle']
 centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
+centercircle.set_colorkey((0, 0, 0), pygame.RLEACCEL)
 tempSurf = assetLoader.imageMap['center_battery_fg']
 centerBatteryFg = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
@@ -145,6 +147,10 @@ def draw():
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
                                                     pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
+    if appSettings.fpsCounter:
+        fpsStr = 'FPS: ' + str(int(chron.get_fps()))
+        fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB('#00fbfe'))
+        display.blit(fpsSurf, (25, 25))
 
     pygame.display.flip()
     '''if initialFrame:
@@ -170,7 +176,7 @@ def eventLoop():
                 exit(0)
         updateClient()
         for i in range(0, 5):
-            chron.tick(appSettings.fps)
+            chron.tick(appSettings.fpsMax)
             render()
 
 

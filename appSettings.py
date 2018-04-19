@@ -7,7 +7,7 @@ time12Hr = True
 
 # Graphics Settings
 screenRatio = 2.0/3.0  # How much of the screen should the dock take up--relative to full screen
-fps = 120
+fpsMax = 120
 doubleBuffer = False
 textGlow = True
 fpsCounter = True
