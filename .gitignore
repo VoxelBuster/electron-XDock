@@ -4,3 +4,5 @@ service/\.idea/workspace\.xml
 service/out/
 target/
 *.pyc
+
+\.idea/workspace\.xml
