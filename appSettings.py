@@ -6,13 +6,13 @@ debug = True
 time12Hr = True
 
 # Graphics Settings
-screenRatio = 1 # How much of the screen should the dock take up--relative to full screen
+screenRatio = 2.0/3.0  # How much of the screen should the dock take up--relative to full screen
 fps = 120
 doubleBuffer = False
 textGlow = True
 fpsCounter = True
 background = False
-useBgImage = False
+useBgImage = True
 bgColor = '#000000'
-bgImage = ''
+bgImage = 'assets/ui/default-bg.jpg'
 hwAccel = False

@@ -19,6 +19,8 @@ public class ProtonSocket {
     private BufferedReader serverIS;
     private DataOutputStream serverOS;
 
+    float bl = 0;
+
     public ProtonSocket() throws IOException {
         socket = serverSock.accept();
         serverIS = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -79,9 +81,10 @@ public class ProtonSocket {
 
     private String genBatteryData() {
         JSONObject root = new JSONObject();
-        root.put("batteryLife", SystemAPI.getBattery());
+        root.put("batteryLife", bl);
         root.put("isCharging", SystemAPI.isCharging());
         root.put("hasBattery", SystemAPI.hasBattery());
+        bl += 0.02;
         return root.toJSONString();
     }
 
