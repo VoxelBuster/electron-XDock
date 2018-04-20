@@ -7,10 +7,11 @@ import json
 import animation
 import assetLoader
 import os
+import glob
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
-os.environ['SDL_VIDEO_WINDOW_POS'] = "{},{}".format(winx,winy)
+os.environ['SDL_VIDEO_WINDOW_POS'] = "{},{}".format(winx, winy)
 
 pygame.init()
 
@@ -37,7 +38,7 @@ except:
     exit(7)
 print 'Connected on port 19700'
 client.setblocking(1)
-client.settimeout(1/appSettings.fpsMax)
+client.settimeout(1 / appSettings.fpsMax)
 
 print 'Loading core assets'
 assetLoader.loadImage('centercircle')
@@ -48,7 +49,8 @@ assetLoader.loadFont('monospace', 36)
 bgImage = None
 
 if appSettings.useBgImage:
-    bgImage = pygame.transform.smoothscale(pygame.image.load(appSettings.bgImage), (display.get_width(), display.get_height()))
+    bgImage = pygame.transform.smoothscale(pygame.image.load(appSettings.bgImage),
+                                           (display.get_width(), display.get_height()))
 
 
 def blit_alpha(target, source, location, opacity):
@@ -60,6 +62,7 @@ def blit_alpha(target, source, location, opacity):
     temp.set_alpha(opacity)
     target.blit(temp, location)
 
+
 ticksUntilBattData = 5
 
 batteryLevel = 0
@@ -67,8 +70,12 @@ isCharging = False
 
 winBg = None
 
+smPaths = []
+shortcuts = []
+
+
 def updateClient():
-    global ticksUntilBattData, batteryLevel, isCharging, winBg
+    global ticksUntilBattData, batteryLevel, isCharging, winBg, smPaths
     if ticksUntilBattData < 1:
         client.send('get batStat\n')
         ticksUntilBattData = 5
@@ -81,17 +88,27 @@ def updateClient():
     items = []
     for i in tempItems:
         items.extend(i.split('\n'))
+    # print items
     for j in range(0, len(items)):
         if 'batStat' in items[j]:
-            battDict = json.loads(items[j+1])
+            battDict = json.loads(items[j + 1])
             batteryLevel = float(battDict['batteryLife'])
             isCharging = bool(battDict['isCharging'])
             continue
         elif 'winBg' in items[j]:
-            winBg = pygame.transform.smoothscale(pygame.image.load(items[j+1]).convert(), (display.get_width(),
-                                                                                           display.get_height()))
+            # print items[j+1]
+            winBg = pygame.transform.smoothscale(pygame.image.load(items[j + 1]).convert(), (display.get_width(),
+                                                                                             display.get_height()))
             continue
+        elif 'smPaths' in items[j]:
+            smPaths = json.loads(items[j + 1])['paths']
+            for path in smPaths:
+                for directory, subdirs, files in os.walk(path):
+                    for filename in files:
+                        shortcuts.append(os.path.join(path, directory, filename))
+            print shortcuts
     ticksUntilBattData -= 1
+
 
 initialFrame = True
 
@@ -107,7 +124,8 @@ centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appS
 centercircle.set_colorkey((0, 0, 0), pygame.RLEACCEL)
 tempSurf = assetLoader.imageMap['center_battery_fg']
 centerBatteryFg = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+                                                          int(tempSurf.get_height() * appSettings.screenRatio)))
+
 
 def draw():
     global initialFrame
@@ -126,7 +144,7 @@ def draw():
     display.blit(centercircle, centerpt)
 
     batteryCrop = int((float(centerBatteryFg.get_height()) / 4.0) + (float(centerBatteryFg.get_height()) / 2.0) *
-                      (1.0-batteryLevel))
+                      (1.0 - batteryLevel))
     cropRect = pygame.Rect(0, batteryCrop, centerBatteryFg.get_width(), int(centerBatteryFg.get_height() - batteryCrop))
     centerBatteryFgCrop = centerBatteryFg.subsurface(cropRect)
     if isCharging:
@@ -145,7 +163,7 @@ def draw():
     timeStr = str(hour) + ' : ' + str(minute)
     timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
-                                                    pygame.Rect((0, 0), (display.get_width(), display.get_height())))
+                                        pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
@@ -164,7 +182,9 @@ def render():
     animations['batteryBar'].advance()
     draw()
 
+
 running = True
+
 
 def eventLoop():
     while running:
@@ -174,6 +194,9 @@ def eventLoop():
                 client.send('quit\n')
                 chron.tick(10)
                 exit(0)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
+                    pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
         updateClient()
         for i in range(0, 5):
             chron.tick(appSettings.fpsMax)

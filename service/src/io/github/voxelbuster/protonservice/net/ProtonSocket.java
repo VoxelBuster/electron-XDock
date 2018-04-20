@@ -3,6 +3,7 @@ package io.github.voxelbuster.protonservice.net;
 import io.github.voxelbuster.protonservice.util.AppSettings;
 import io.github.voxelbuster.protonservice.util.Debug;
 import io.github.voxelbuster.protonservice.util.SystemAPI;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
@@ -28,7 +29,8 @@ public class ProtonSocket {
 
         if (socket.isConnected()) {
             Debug.log("Connected to client");
-            outBuffer.add("winBg;" + SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper"));
+            outBuffer.add("winBg;" + SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper") + "\n");
+            outBuffer.add("smPaths;" + genPathData(EnumPathData.PROGRAMS) + "\n");
             Thread inThread = new Thread(() -> {
                 while (!ProtonSocket.this.isDead()) {
                     try {
@@ -39,7 +41,7 @@ public class ProtonSocket {
                         for (String msg : buffer) {
                             Debug.log("data_recv: " + msg);
                             if (msg.contains("get batStat")) {
-                                outBuffer.add("batStat;" + genBatteryData());
+                                outBuffer.add("batStat;" + genBatteryData() + "\n");
                             } else if (msg.equals("quit")) {
                                 Debug.log("Client requested service shutdown...");
                                 socket.close();
@@ -83,6 +85,32 @@ public class ProtonSocket {
         root.put("batteryLife", SystemAPI.getBattery());
         root.put("isCharging", SystemAPI.isCharging());
         root.put("hasBattery", SystemAPI.hasBattery());
+        return root.toJSONString();
+    }
+
+    private enum EnumPathData {
+        PROGRAMS,
+        MUSIC,
+        GAMES
+    }
+
+    private String genPathData (EnumPathData epd) {
+        JSONObject root = new JSONObject();
+        switch (epd) {
+            case PROGRAMS:
+                JSONArray pathArr = new JSONArray();
+                for (String s : SystemAPI.startMenuPaths) {
+                    pathArr.add(s);
+                }
+                root.put("paths", pathArr);
+                break;
+            case GAMES:
+                break;
+            case MUSIC:
+                break;
+            default:
+                break;
+        }
         return root.toJSONString();
     }
 
