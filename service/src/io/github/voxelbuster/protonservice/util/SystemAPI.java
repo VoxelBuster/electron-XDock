@@ -11,6 +11,9 @@ import java.util.ArrayList;
  * Various methods for interacting with the Windows OS or kernel. Most of these functions will probably break on non-Windows systems.
  */
 public class SystemAPI {
+    public static final String startMenuPath = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
+    // TODO get installed programs from start menu dir
+
     public static double getBattery() {
         Kernel32.SYSTEM_POWER_STATUS powerStatus = new Kernel32.SYSTEM_POWER_STATUS();
         Kernel32.INSTANCE.GetSystemPowerStatus(powerStatus);
