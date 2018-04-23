@@ -7,7 +7,6 @@ import json
 import animation
 import assetLoader
 import os
-import glob
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
@@ -29,6 +28,9 @@ if appSettings.hwAccel:
 else:
     display = pygame.display.set_mode(
         (info.current_w, info.current_h), pygame.NOFRAME)
+pygame.display.set_caption('Windows X Holo Dock')
+assetLoader.loadImage('appicon')
+pygame.display.set_icon(assetLoader.imageMap['appicon'])
 
 print 'Connecting to service socket'
 try:
@@ -43,6 +45,8 @@ client.settimeout(1 / appSettings.fpsMax)
 print 'Loading core assets'
 assetLoader.loadImage('centercircle')
 assetLoader.loadImage('center_battery_fg')
+assetLoader.loadImage('exit_icon')
+assetLoader.loadImage('exit_icon_hl')
 
 assetLoader.loadFont('header', 96)
 assetLoader.loadFont('monospace', 36)
@@ -113,22 +117,41 @@ def updateClient():
 initialFrame = True
 
 animations = {
-    'batteryBar': animation.GUIAnimator(60)
+    'batteryBar': animation.GUIAnimator(60),
+    'mm_expand': animation.GUIAnimator(15)
 }
+
+centerScreen = (display.get_width() / 2, display.get_height() / 2)
+centerRadius = 512 * appSettings.screenRatio
 
 animations['batteryBar'].loop = True
 
 tempSurf = assetLoader.imageMap['centercircle']
 centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
+centerpt = voxMath.centerObject(pygame.Rect((0, 0), (centercircle.get_size()[0], centercircle.get_size()[1])),
+                                    pygame.Rect((0, 0), (display.get_width(), display.get_height())))
+ccRect = pygame.Rect(centerpt[0], centerpt[1], centercircle.get_width(), centercircle.get_height())
+
 centercircle.set_colorkey((0, 0, 0), pygame.RLEACCEL)
 tempSurf = assetLoader.imageMap['center_battery_fg']
 centerBatteryFg = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                           int(tempSurf.get_height() * appSettings.screenRatio)))
 
+tempSurf = assetLoader.imageMap['exit_icon']
+exit_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['exit_icon_hl']
+exit_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
+expandMainMenu = False
+
+exitRect = pygame.Rect(0, 0, 0, 0)
 
 def draw():
-    global initialFrame
+    global initialFrame, exitRect
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg:
@@ -139,8 +162,6 @@ def draw():
         pygame.draw.rect(display, voxMath.hexToRGB(appSettings.bgColor), (0, 0, display.get_width(),
                                                                           display.get_height()))
 
-    centerpt = voxMath.centerObject(pygame.Rect((0, 0), (centercircle.get_size()[0], centercircle.get_size()[1])),
-                                    pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(centercircle, centerpt)
 
     batteryCrop = int((float(centerBatteryFg.get_height()) / 4.0) + (float(centerBatteryFg.get_height()) / 2.0) *
@@ -160,16 +181,20 @@ def draw():
     if hour == 0:
         hour = 12
     minute = datetime.now().minute
-    timeStr = str(hour) + ' : ' + str(minute)
+    timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
     timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
                                         pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
+    if expandMainMenu:
+        animations['mm_expand'].advance()
+        tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
+        exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
+        display.blit(exit_icon, tempPt)
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB('#00fbfe'))
         display.blit(fpsSurf, (25, 25))
-
     pygame.display.flip()
     '''if initialFrame:
         pygame.display.flip()
@@ -187,6 +212,7 @@ running = True
 
 
 def eventLoop():
+    global expandMainMenu
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -197,7 +223,15 @@ def eventLoop():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if ccRect.collidepoint(pygame.mouse.get_pos()):
+                    expandMainMenu = not expandMainMenu
+                if expandMainMenu:
+                    if exitRect.collidepoint(pygame.mouse.get_pos()):
+                        pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
         updateClient()
+        if not expandMainMenu:
+            animations['mm_expand'].reset()
         for i in range(0, 5):
             chron.tick(appSettings.fpsMax)
             render()
