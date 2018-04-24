@@ -1,4 +1,5 @@
 from datetime import datetime
+from pymunk.vec2d import Vec2d
 import pygame
 import appSettings
 import socket
@@ -23,8 +24,12 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 print 'Creating display ' + str(info.current_w) + 'x' + str(info.current_h)
 if appSettings.hwAccel:
-    display = pygame.display.set_mode(
-        (info.current_w, info.current_h), pygame.NOFRAME)
+    if appSettings.doubleBuffer:
+        display = pygame.display.set_mode(
+            (info.current_w, info.current_h), pygame.NOFRAME | pygame.HWSURFACE | pygame.DOUBLEBUF)
+    else:
+        display = pygame.display.set_mode(
+            (info.current_w, info.current_h), pygame.NOFRAME | pygame.HWSURFACE)
 else:
     display = pygame.display.set_mode(
         (info.current_w, info.current_h), pygame.NOFRAME)
@@ -47,6 +52,14 @@ assetLoader.loadImage('centercircle')
 assetLoader.loadImage('center_battery_fg')
 assetLoader.loadImage('exit_icon')
 assetLoader.loadImage('exit_icon_hl')
+assetLoader.loadImage('game_icon')
+assetLoader.loadImage('game_icon_hl')
+assetLoader.loadImage('gear_icon')
+assetLoader.loadImage('gear_icon_hl')
+assetLoader.loadImage('power_icon')
+assetLoader.loadImage('power_icon_hl')
+assetLoader.loadImage('search_icon')
+assetLoader.loadImage('search_icon_hl')
 
 assetLoader.loadFont('header', 96)
 assetLoader.loadFont('monospace', 36)
@@ -114,23 +127,26 @@ def updateClient():
     ticksUntilBattData -= 1
 
 
+# Setting base properties for rendering
 initialFrame = True
 
 animations = {
-    'batteryBar': animation.GUIAnimator(60),
-    'mm_expand': animation.GUIAnimator(15)
+    'battery_bar': animation.GUIAnimator(60),
+    'mm_expand': animation.GUIAnimator(10),
+    'mm_icon_enter': animation.GUIAnimator(15),
+    'mm_icon_exit': animation.GUIAnimator(15)
 }
 
 centerScreen = (display.get_width() / 2, display.get_height() / 2)
-centerRadius = 512 * appSettings.screenRatio
 
-animations['batteryBar'].loop = True
+animations['battery_bar'].loop = True
+animations['mm_icon_exit'].reverse = True
 
 tempSurf = assetLoader.imageMap['centercircle']
 centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
 centerpt = voxMath.centerObject(pygame.Rect((0, 0), (centercircle.get_size()[0], centercircle.get_size()[1])),
-                                    pygame.Rect((0, 0), (display.get_width(), display.get_height())))
+                                pygame.Rect((0, 0), (display.get_width(), display.get_height())))
 ccRect = pygame.Rect(centerpt[0], centerpt[1], centercircle.get_width(), centercircle.get_height())
 
 centercircle.set_colorkey((0, 0, 0), pygame.RLEACCEL)
@@ -140,7 +156,23 @@ centerBatteryFg = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width
 
 tempSurf = assetLoader.imageMap['exit_icon']
 exit_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['game_icon']
+game_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['gear_icon']
+gear_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['power_icon']
+power_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                               int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['search_icon']
+search_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['exit_icon_hl']
 exit_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
@@ -150,8 +182,9 @@ expandMainMenu = False
 
 exitRect = pygame.Rect(0, 0, 0, 0)
 
+
 def draw():
-    global initialFrame, exitRect
+    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg:
@@ -169,8 +202,8 @@ def draw():
     cropRect = pygame.Rect(0, batteryCrop, centerBatteryFg.get_width(), int(centerBatteryFg.get_height() - batteryCrop))
     centerBatteryFgCrop = centerBatteryFg.subsurface(cropRect)
     if isCharging:
-        absAlpha = int(255.0 * float(((animations['batteryBar'].getCurrentFrame()) % 30) / 30.0))
-        if animations['batteryBar'].getCurrentFrame() >= 30:
+        absAlpha = int(255.0 * float(((animations['battery_bar'].getCurrentFrame()) % 30) / 30.0))
+        if animations['battery_bar'].getCurrentFrame() >= 30:
             blit_alpha(display, centerBatteryFgCrop, (centerpt[0], centerpt[1] + batteryCrop), 255 - absAlpha)
         else:
             blit_alpha(display, centerBatteryFgCrop, (centerpt[0], centerpt[1] + batteryCrop), absAlpha)
@@ -186,11 +219,32 @@ def draw():
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
                                         pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
-    if expandMainMenu:
+    if expandMainMenu:  # Engage stupid amounts of vector math
+        centerRadius = 512 * appSettings.screenRatio
         animations['mm_expand'].advance()
+        absAlpha = 255 * float(animations['mm_expand'].getCurrentFrame()) / 10.0
+        centerRadius -= exit_icon.get_width() - (
+        exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
         tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
         exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
-        display.blit(exit_icon, tempPt)
+        blit_alpha(display, exit_icon, tempPt, absAlpha)
+        refVec = Vec2d(0, centerRadius)
+        refVec.rotate_degrees(90)
+        tempPt = (centerScreen[0] + int(refVec.x) - game_icon.get_width(), centerScreen[1] - game_icon.get_width() / 2)
+        gamesRect = pygame.Rect(tempPt[0], tempPt[1], game_icon.get_width(), game_icon.get_height())
+        blit_alpha(display, game_icon, tempPt, absAlpha)
+        refVec.rotate_degrees(-45)
+        tempPt = (centerScreen[0] + int(refVec.x) - gear_icon.get_width(), centerScreen[1] + int(refVec.y))
+        gearRect = pygame.Rect(tempPt[0], tempPt[1], gear_icon.get_width(), gear_icon.get_height())
+        blit_alpha(display, gear_icon, tempPt, absAlpha)
+        refVec.rotate_degrees(-90)
+        tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y))
+        powerRect = pygame.Rect(tempPt[0], tempPt[1], power_icon.get_width(), power_icon.get_height())
+        blit_alpha(display, power_icon, tempPt, absAlpha)
+        refVec.rotate_degrees(-45)
+        tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y) - search_icon.get_height() / 2)
+        searchRect = pygame.Rect(tempPt[0], tempPt[1], search_icon.get_width(), search_icon.get_height())
+        blit_alpha(display, search_icon, tempPt, absAlpha)
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB('#00fbfe'))
@@ -204,7 +258,7 @@ def draw():
 
 
 def render():
-    animations['batteryBar'].advance()
+    animations['battery_bar'].advance()
     draw()
 
 
@@ -226,6 +280,10 @@ def eventLoop():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if ccRect.collidepoint(pygame.mouse.get_pos()):
                     expandMainMenu = not expandMainMenu
+                    if not expandMainMenu:
+                        animations['mm_expand'].reverse = True
+                    else:
+                        animations['mm_expand'].reverse = False
                 if expandMainMenu:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
