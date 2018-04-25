@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="065fe8ab-e4ce-49be-84d3-5ddb608069ce" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/appSettings.py" afterPath="$PROJECT_DIR$/appSettings.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/electronUI.py" afterPath="$PROJECT_DIR$/electronUI.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/service/.idea/workspace.xml" afterPath="$PROJECT_DIR$/service/.idea/workspace.xml" />
     </list>
@@ -22,8 +22,8 @@
       <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/electronUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="31" column="79" lean-forward="false" selection-start-line="31" selection-start-column="79" selection-end-line="31" selection-end-column="79" />
+            <state relative-caret-position="2390">
+              <caret line="371" column="73" lean-forward="true" selection-start-line="371" selection-start-column="73" selection-end-line="371" selection-end-column="73" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -34,7 +34,7 @@
       <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assetLoader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
+            <state relative-caret-position="352">
               <caret line="16" column="46" lean-forward="false" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
               <folding />
             </state>
@@ -76,6 +76,7 @@
       <find>--</find>
       <find>}</find>
       <find>fps</find>
+      <find>radius</find>
     </findStrings>
     <replaceStrings>
       <replace>self</replace>
@@ -92,8 +93,8 @@
         <option value="$PROJECT_DIR$/animation.py" />
         <option value="$PROJECT_DIR$/voxMath.py" />
         <option value="$PROJECT_DIR$/assetLoader.py" />
-        <option value="$PROJECT_DIR$/electronUI.py" />
         <option value="$PROJECT_DIR$/appSettings.py" />
+        <option value="$PROJECT_DIR$/electronUI.py" />
       </list>
     </option>
   </component>
@@ -472,6 +473,40 @@
     <entry file="file://$PROJECT_DIR$/assetLoader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
+          <caret line="16" column="46" lean-forward="false" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voxMath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="15" lean-forward="false" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/appSettings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/electronUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assetLoader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
           <caret line="16" column="46" lean-forward="true" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
           <folding />
         </state>
@@ -664,7 +699,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assetLoader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
+        <state relative-caret-position="352">
           <caret line="16" column="46" lean-forward="false" selection-start-line="16" selection-start-column="46" selection-end-line="16" selection-end-column="46" />
           <folding />
         </state>
@@ -672,8 +707,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/electronUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="31" column="79" lean-forward="false" selection-start-line="31" selection-start-column="79" selection-end-line="31" selection-end-column="79" />
+        <state relative-caret-position="2390">
+          <caret line="371" column="73" lean-forward="true" selection-start-line="371" selection-start-column="73" selection-end-line="371" selection-end-column="73" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>

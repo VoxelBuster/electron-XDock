@@ -134,13 +134,20 @@ animations = {
     'battery_bar': animation.GUIAnimator(60),
     'mm_expand': animation.GUIAnimator(10),
     'mm_icon_enter': animation.GUIAnimator(15),
-    'mm_icon_exit': animation.GUIAnimator(15)
+    'mm_icon_exit': animation.GUIAnimator(15),
+    'mm_icon_enter2': animation.GUIAnimator(15),
+    'mm_icon_exit2': animation.GUIAnimator(15),
+    'mm_icon_enter3': animation.GUIAnimator(15),
+    'mm_icon_exit3': animation.GUIAnimator(15),
+    'mm_icon_enter4': animation.GUIAnimator(15),
+    'mm_icon_exit4': animation.GUIAnimator(15),
+    'mm_icon_enter5': animation.GUIAnimator(15),
+    'mm_icon_exit5': animation.GUIAnimator(15),
 }
 
 centerScreen = (display.get_width() / 2, display.get_height() / 2)
 
 animations['battery_bar'].loop = True
-animations['mm_icon_exit'].reverse = True
 
 tempSurf = assetLoader.imageMap['centercircle']
 centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
@@ -178,10 +185,29 @@ tempSurf = assetLoader.imageMap['exit_icon_hl']
 exit_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
 
+tempSurf = assetLoader.imageMap['game_icon_hl']
+game_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['gear_icon_hl']
+gear_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['power_icon_hl']
+power_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
+tempSurf = assetLoader.imageMap['search_icon_hl']
+search_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+
 expandMainMenu = False
 
 exitRect = pygame.Rect(0, 0, 0, 0)
-
+gamesRect = pygame.Rect(0, 0, 0, 0)
+gearRect = pygame.Rect(0, 0, 0, 0)
+searchRect = pygame.Rect(0, 0, 0, 0)
+powerRect = pygame.Rect(0, 0, 0, 0)
 
 def draw():
     global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect
@@ -219,32 +245,84 @@ def draw():
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
                                         pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
-    if expandMainMenu:  # Engage stupid amounts of vector math
-        centerRadius = 512 * appSettings.screenRatio
+
+    if expandMainMenu:  # Engage stupid amounts of vector and animation math
+        centerRadius = centercircle.get_height() / 2 * 1.1
         animations['mm_expand'].advance()
         absAlpha = 255 * float(animations['mm_expand'].getCurrentFrame()) / 10.0
         centerRadius -= exit_icon.get_width() - (
         exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
         tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
         exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
-        blit_alpha(display, exit_icon, tempPt, absAlpha)
+        if exitRect.collidepoint(pygame.mouse.get_pos()):
+            animations['mm_icon_exit'].reset()
+            animations['mm_icon_enter'].advance()
+            alphaHl = 255 * float(animations['mm_icon_enter'].getCurrentFrame()) / 15.0
+            blit_alpha(display, exit_icon_hl, tempPt, alphaHl)
+        else:
+            animations['mm_icon_enter'].reset()
+            animations['mm_icon_exit'].advance()
+            alphaHl = 255 * (1.0 - (float(animations['mm_icon_exit'].getCurrentFrame()) / 15.0))
+            blit_alpha(display, exit_icon, tempPt, absAlpha)
+            blit_alpha(display, exit_icon_hl, tempPt, alphaHl)
         refVec = Vec2d(0, centerRadius)
         refVec.rotate_degrees(90)
         tempPt = (centerScreen[0] + int(refVec.x) - game_icon.get_width(), centerScreen[1] - game_icon.get_width() / 2)
         gamesRect = pygame.Rect(tempPt[0], tempPt[1], game_icon.get_width(), game_icon.get_height())
-        blit_alpha(display, game_icon, tempPt, absAlpha)
+        if gamesRect.collidepoint(pygame.mouse.get_pos()):
+            animations['mm_icon_exit2'].reset()
+            animations['mm_icon_enter2'].advance()
+            alphaHl2 = 255 * float(animations['mm_icon_enter2'].getCurrentFrame()) / 15.0
+            blit_alpha(display, game_icon_hl, tempPt, alphaHl2)
+        else:
+            animations['mm_icon_enter2'].reset()
+            animations['mm_icon_exit2'].advance()
+            alphaHl2 = 255 * (1.0 - (float(animations['mm_icon_exit2'].getCurrentFrame()) / 15.0))
+            blit_alpha(display, game_icon, tempPt, absAlpha)
+            blit_alpha(display, game_icon_hl, tempPt, alphaHl2)
         refVec.rotate_degrees(-45)
         tempPt = (centerScreen[0] + int(refVec.x) - gear_icon.get_width(), centerScreen[1] + int(refVec.y))
         gearRect = pygame.Rect(tempPt[0], tempPt[1], gear_icon.get_width(), gear_icon.get_height())
-        blit_alpha(display, gear_icon, tempPt, absAlpha)
+        if gearRect.collidepoint(pygame.mouse.get_pos()):
+            animations['mm_icon_exit3'].reset()
+            animations['mm_icon_enter3'].advance()
+            alphaHl3 = 255 * float(animations['mm_icon_enter3'].getCurrentFrame()) / 15.0
+            blit_alpha(display, gear_icon_hl, tempPt, alphaHl3)
+        else:
+            animations['mm_icon_enter3'].reset()
+            animations['mm_icon_exit3'].advance()
+            alphaHl3 = 255 * (1.0 - (float(animations['mm_icon_exit3'].getCurrentFrame()) / 15.0))
+            blit_alpha(display, gear_icon, tempPt, absAlpha)
+            blit_alpha(display, gear_icon_hl, tempPt, alphaHl3)
         refVec.rotate_degrees(-90)
         tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y))
         powerRect = pygame.Rect(tempPt[0], tempPt[1], power_icon.get_width(), power_icon.get_height())
-        blit_alpha(display, power_icon, tempPt, absAlpha)
+        if powerRect.collidepoint(pygame.mouse.get_pos()):
+            animations['mm_icon_exit4'].reset()
+            animations['mm_icon_enter4'].advance()
+            alphaHl4 = 255 * float(animations['mm_icon_enter4'].getCurrentFrame()) / 15.0
+            blit_alpha(display, power_icon_hl, tempPt, alphaHl4)
+        else:
+            animations['mm_icon_enter4'].reset()
+            animations['mm_icon_exit4'].advance()
+            alphaHl4 = 255 * (1.0 - (float(animations['mm_icon_exit4'].getCurrentFrame()) / 15.0))
+            blit_alpha(display, power_icon, tempPt, absAlpha)
+            blit_alpha(display, power_icon_hl, tempPt, alphaHl4)
         refVec.rotate_degrees(-45)
         tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y) - search_icon.get_height() / 2)
         searchRect = pygame.Rect(tempPt[0], tempPt[1], search_icon.get_width(), search_icon.get_height())
-        blit_alpha(display, search_icon, tempPt, absAlpha)
+        if searchRect.collidepoint(pygame.mouse.get_pos()):
+            animations['mm_icon_exit5'].reset()
+            animations['mm_icon_enter5'].advance()
+            alphaHl5 = 255 * float(animations['mm_icon_enter5'].getCurrentFrame()) / 15.0
+            blit_alpha(display, search_icon_hl, tempPt, alphaHl5)
+        else:
+            animations['mm_icon_enter5'].reset()
+            animations['mm_icon_exit5'].advance()
+            alphaHl5 = 255 * (1.0 - (float(animations['mm_icon_exit5'].getCurrentFrame()) / 15.0))
+            blit_alpha(display, search_icon, tempPt, absAlpha)
+            blit_alpha(display, search_icon_hl, tempPt, alphaHl5)
+
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB('#00fbfe'))
@@ -287,6 +365,14 @@ def eventLoop():
                 if expandMainMenu:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
+                    elif gearRect.collidepoint(pygame.mouse.get_pos()):
+                        pass
+                    elif powerRect.collidepoint(pygame.mouse.get_pos()):
+                        pass
+                    elif searchRect.collidepoint(pygame.mouse.get_pos()):
+                        pass
+                    elif gamesRect.collidepoint(pygame.mouse.get_pos()):
+                        pass
         updateClient()
         if not expandMainMenu:
             animations['mm_expand'].reset()
