@@ -73,7 +73,7 @@ if appSettings.useBgImage:
 def blit_alpha(target, source, location, opacity):
     x = location[0]
     y = location[1]
-    temp = pygame.Surface((source.get_width(), source.get_height())).convert()
+    temp = pygame.Surface((source.get_width(), source.get_height()), pygame.HWSURFACE).convert()
     temp.blit(target, (-x, -y))
     temp.blit(source, (0, 0))
     temp.set_alpha(opacity)
@@ -143,6 +143,7 @@ animations = {
     'mm_icon_exit4': animation.GUIAnimator(15),
     'mm_icon_enter5': animation.GUIAnimator(15),
     'mm_icon_exit5': animation.GUIAnimator(15),
+    'settings_expand': animation.GUIAnimator(10)
 }
 
 centerScreen = (display.get_width() / 2, display.get_height() / 2)
@@ -202,6 +203,7 @@ search_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * ap
                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
 
 expandMainMenu = False
+showSettings = False
 
 exitRect = pygame.Rect(0, 0, 0, 0)
 gamesRect = pygame.Rect(0, 0, 0, 0)
@@ -210,7 +212,7 @@ searchRect = pygame.Rect(0, 0, 0, 0)
 powerRect = pygame.Rect(0, 0, 0, 0)
 
 def draw():
-    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect
+    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg:
@@ -322,10 +324,15 @@ def draw():
             alphaHl5 = 255 * (1.0 - (float(animations['mm_icon_exit5'].getCurrentFrame()) / 15.0))
             blit_alpha(display, search_icon, tempPt, absAlpha)
             blit_alpha(display, search_icon_hl, tempPt, alphaHl5)
-
+    if showSettings:
+        animations['settings_expand'].advance()
+        s = pygame.Surface((display.get_width() / 4, display.get_height()), pygame.HWSURFACE)
+        s.set_alpha(196)  # alpha level
+        s.fill(voxMath.hexToRGB(appSettings.themeAccentColor))
+        display.blit(s, (display.get_width() - float(s.get_width()) * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
-        fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB('#00fbfe'))
+        fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB(appSettings.themeColor))
         display.blit(fpsSurf, (25, 25))
     pygame.display.flip()
     '''if initialFrame:
@@ -344,7 +351,7 @@ running = True
 
 
 def eventLoop():
-    global expandMainMenu
+    global expandMainMenu, showSettings
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -356,23 +363,25 @@ def eventLoop():
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if ccRect.collidepoint(pygame.mouse.get_pos()):
-                    expandMainMenu = not expandMainMenu
-                    if not expandMainMenu:
-                        animations['mm_expand'].reverse = True
-                    else:
-                        animations['mm_expand'].reverse = False
                 if expandMainMenu:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
                     elif gearRect.collidepoint(pygame.mouse.get_pos()):
-                        pass
+                        print 'clicked'
+                        showSettings = True
+                        expandMainMenu = False
                     elif powerRect.collidepoint(pygame.mouse.get_pos()):
                         pass
                     elif searchRect.collidepoint(pygame.mouse.get_pos()):
                         pass
                     elif gamesRect.collidepoint(pygame.mouse.get_pos()):
                         pass
+                if ccRect.collidepoint(pygame.mouse.get_pos()):
+                    expandMainMenu = not expandMainMenu
+                    if not expandMainMenu:
+                        animations['mm_expand'].reverse = True
+                    else:
+                        animations['mm_expand'].reverse = False
         updateClient()
         if not expandMainMenu:
             animations['mm_expand'].reset()
