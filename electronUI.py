@@ -62,7 +62,7 @@ assetLoader.loadImage('search_icon')
 assetLoader.loadImage('search_icon_hl')
 
 assetLoader.loadFont('header', 96)
-assetLoader.loadFont('monospace', 36)
+assetLoader.loadFont('monospace', 48)
 bgImage = None
 
 if appSettings.useBgImage:
@@ -73,7 +73,10 @@ if appSettings.useBgImage:
 def blit_alpha(target, source, location, opacity):
     x = location[0]
     y = location[1]
-    temp = pygame.Surface((source.get_width(), source.get_height()), pygame.HWSURFACE).convert(target)
+    if appSettings.hwAccel:
+        temp = pygame.Surface((source.get_width(), source.get_height()), pygame.HWSURFACE).convert(target)
+    else:
+        temp = pygame.Surface((source.get_width(), source.get_height())).convert(target)
     temp.blit(target, (-x, -y))
     temp.blit(source, (0, 0))
     temp.set_alpha(opacity)
@@ -151,8 +154,8 @@ centerScreen = (display.get_width() / 2, display.get_height() / 2)
 animations['battery_bar'].loop = True
 
 tempSurf = assetLoader.imageMap['centercircle']
-centercircle = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+centercircle = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                       int(tempSurf.get_height() * appSettings.screenRatio)))
 centerpt = voxMath.centerObject(pygame.Rect((0, 0), (centercircle.get_size()[0], centercircle.get_size()[1])),
                                 pygame.Rect((0, 0), (display.get_width(), display.get_height())))
 ccRect = pygame.Rect(centerpt[0], centerpt[1], centercircle.get_width(), centercircle.get_height())
@@ -163,51 +166,56 @@ centerBatteryFg = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width
                                                           int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['exit_icon']
-exit_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+exit_icon = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                    int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['game_icon']
-game_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+game_icon = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                    int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['gear_icon']
-gear_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                              int(tempSurf.get_height() * appSettings.screenRatio)))
+gear_icon = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                    int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['power_icon']
-power_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                               int(tempSurf.get_height() * appSettings.screenRatio)))
+power_icon = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                     int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['search_icon']
-search_icon = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                int(tempSurf.get_height() * appSettings.screenRatio)))
+search_icon = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                      int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['exit_icon_hl']
-exit_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+exit_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                       int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['game_icon_hl']
-game_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+game_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                       int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['gear_icon_hl']
-gear_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+gear_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                       int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['power_icon_hl']
-power_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
+power_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                        int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['search_icon_hl']
-search_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                   int(tempSurf.get_height() * appSettings.screenRatio)))
+search_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
+                                                         int(tempSurf.get_height() * appSettings.screenRatio)))
 
 hour = datetime.now().hour % 12
 if hour == 0:
     hour = 12
 minute = datetime.now().minute
 timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
-timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
+timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB(appSettings.themeColor))
+
+settingsHeaderSurf = assetLoader.fontsMap['monospace'].render('Settings', 1, voxMath.hexToRGB(appSettings.themeColor))
+settingsHeaderSurf = pygame.transform.smoothscale(settingsHeaderSurf,
+                                                  (int(appSettings.screenRatio * settingsHeaderSurf.get_width()),
+                                                   int(appSettings.screenRatio * settingsHeaderSurf.get_height())))
 
 expandMainMenu = False
 showSettings = False
@@ -331,6 +339,7 @@ def draw():
         s = pygame.Surface((display.get_width() / 4, display.get_height()), pygame.HWSURFACE)
         s.set_alpha(196)  # alpha level
         s.fill(voxMath.hexToRGB(appSettings.themeAccentColor))
+        s.blit(settingsHeaderSurf, (20, 20))
         display.blit(s, (display.get_width() - float(s.get_width())
                          * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
     if appSettings.fpsCounter:
@@ -354,7 +363,7 @@ running = True
 
 
 def eventLoop():
-    global expandMainMenu, showSettings
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

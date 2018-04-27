@@ -1,4 +1,5 @@
 import pygame
+import appSettings
 
 pygame.init()
 
@@ -29,7 +30,10 @@ fontsMap = {}
 
 def loadImage(imgid):
     temp = pygame.image.load(images[imgid])
-    surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    if appSettings.hwAccel:
+        surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    else:
+        surf = pygame.Surface((temp.get_width(), temp.get_height()))
     temp = temp.convert_alpha(surf)
     surf = surf.convert_alpha()
     surf.fill((0, 0, 0, 0))
@@ -38,7 +42,10 @@ def loadImage(imgid):
 
 def loadExtImg(filename):
     temp = pygame.image.load(filename)
-    surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    if appSettings.hwAccel:
+        surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    else:
+        surf = pygame.Surface((temp.get_width(), temp.get_height()))
     temp = temp.convert_alpha(surf)
     surf = surf.convert_alpha()
     surf.fill((0, 0, 0, 0))
