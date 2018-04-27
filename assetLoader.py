@@ -28,7 +28,22 @@ imageMap = {}
 fontsMap = {}
 
 def loadImage(imgid):
-    imageMap[imgid] = pygame.image.load(images[imgid]).convert_alpha()
+    temp = pygame.image.load(images[imgid])
+    surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    temp = temp.convert_alpha(surf)
+    surf = surf.convert_alpha()
+    surf.fill((0, 0, 0, 0))
+    surf.blit(temp, (0, 0))
+    imageMap[imgid] = surf
+
+def loadExtImg(filename):
+    temp = pygame.image.load(filename)
+    surf = pygame.Surface((temp.get_width(), temp.get_height()), pygame.HWSURFACE)
+    temp = temp.convert_alpha(surf)
+    surf = surf.convert_alpha()
+    surf.fill((0, 0, 0, 0))
+    surf.blit(temp, (0, 0))
+    return surf
 
 def loadFont(fid, size):
     fontsMap[fid] = pygame.font.Font(fonts[fid], size)

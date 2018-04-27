@@ -66,14 +66,14 @@ assetLoader.loadFont('monospace', 36)
 bgImage = None
 
 if appSettings.useBgImage:
-    bgImage = pygame.transform.smoothscale(pygame.image.load(appSettings.bgImage),
+    bgImage = pygame.transform.smoothscale(assetLoader.loadExtImg(appSettings.bgImage),
                                            (display.get_width(), display.get_height()))
 
 
 def blit_alpha(target, source, location, opacity):
     x = location[0]
     y = location[1]
-    temp = pygame.Surface((source.get_width(), source.get_height()), pygame.HWSURFACE).convert()
+    temp = pygame.Surface((source.get_width(), source.get_height()), pygame.HWSURFACE).convert(target)
     temp.blit(target, (-x, -y))
     temp.blit(source, (0, 0))
     temp.set_alpha(opacity)
@@ -196,11 +196,18 @@ gear_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appS
 
 tempSurf = assetLoader.imageMap['power_icon_hl']
 power_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+                                                  int(tempSurf.get_height() * appSettings.screenRatio)))
 
 tempSurf = assetLoader.imageMap['search_icon_hl']
 search_icon_hl = pygame.transform.scale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
-                                                 int(tempSurf.get_height() * appSettings.screenRatio)))
+                                                   int(tempSurf.get_height() * appSettings.screenRatio)))
+
+hour = datetime.now().hour % 12
+if hour == 0:
+    hour = 12
+minute = datetime.now().minute
+timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
+timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
 
 expandMainMenu = False
 showSettings = False
@@ -211,8 +218,9 @@ gearRect = pygame.Rect(0, 0, 0, 0)
 searchRect = pygame.Rect(0, 0, 0, 0)
 powerRect = pygame.Rect(0, 0, 0, 0)
 
+
 def draw():
-    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings
+    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg:
@@ -238,12 +246,6 @@ def draw():
     else:
         display.blit(centerBatteryFgCrop, (centerpt[0], centerpt[1] + batteryCrop))
 
-    hour = datetime.now().hour % 12
-    if hour == 0:
-        hour = 12
-    minute = datetime.now().minute
-    timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
-    timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
     centertimept = voxMath.centerObject(pygame.Rect((0, 0), (timeSurf.get_size()[0], timeSurf.get_size()[1])),
                                         pygame.Rect((0, 0), (display.get_width(), display.get_height())))
     display.blit(timeSurf, centertimept)
@@ -253,7 +255,7 @@ def draw():
         animations['mm_expand'].advance()
         absAlpha = 255 * float(animations['mm_expand'].getCurrentFrame()) / 10.0
         centerRadius -= exit_icon.get_width() - (
-        exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
+            exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
         tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
         exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
         if exitRect.collidepoint(pygame.mouse.get_pos()):
@@ -329,7 +331,8 @@ def draw():
         s = pygame.Surface((display.get_width() / 4, display.get_height()), pygame.HWSURFACE)
         s.set_alpha(196)  # alpha level
         s.fill(voxMath.hexToRGB(appSettings.themeAccentColor))
-        display.blit(s, (display.get_width() - float(s.get_width()) * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
+        display.blit(s, (display.get_width() - float(s.get_width())
+                         * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB(appSettings.themeColor))
@@ -383,6 +386,12 @@ def eventLoop():
                     else:
                         animations['mm_expand'].reverse = False
         updateClient()
+        hour = datetime.now().hour % 12
+        if hour == 0:
+            hour = 12
+        minute = datetime.now().minute
+        timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
+        timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
         if not expandMainMenu:
             animations['mm_expand'].reset()
         for i in range(0, 5):
