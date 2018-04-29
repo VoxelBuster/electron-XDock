@@ -1,5 +1,5 @@
 # Data Settings
-dataDir = ""
+dataDir = "user/"
 debug = True
 
 # UI Settings
@@ -11,7 +11,6 @@ fpsMax = 60
 doubleBuffer = True
 textGlow = True
 fpsCounter = True
-background = False
 useBgImage = True
 useWinBg = False
 bgColor = '#000000'
@@ -19,3 +18,4 @@ themeColor = '#00fbfe'
 themeAccentColor = '#424265'
 bgImage = 'assets/ui/default-bg.jpg'
 hwAccel = True
+

@@ -1,5 +1,7 @@
 import pygame
 import appSettings
+import json
+import os
 
 pygame.init()
 
@@ -16,7 +18,9 @@ images = {
     'gear_icon_hl': 'assets/ui/gear-highlighted.png',
     'power_icon_hl': 'assets/ui/power-highlighted.png',
     'search_icon_hl': 'assets/ui/search-highlighted.png',
-    'appicon': 'assets/ico/appicon.png'
+    'appicon': 'assets/ico/appicon.png',
+    'cb_checked': 'assets/ui/cb_checked.png',
+    'cb_unchecked': 'assets/ui/cb_unchecked.png'
 }
 
 fonts = {
@@ -54,3 +58,17 @@ def loadExtImg(filename):
 
 def loadFont(fid, size):
     fontsMap[fid] = pygame.font.Font(fonts[fid], size)
+
+
+def writeOutSettings():
+    obj = {}
+    os.makedirs(appSettings.dataDir)
+    for attrStr in dir(appSettings):
+        obj[attrStr] = getattr(appSettings, attrStr)
+    json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
+
+def readSettings():
+    if os.path.exists(appSettings.dataDir + 'appSettings.json'):
+        obj = json.load(open(appSettings.dataDir + 'appSettings.json', 'r'))
+        for attrStr in dir(appSettings):
+            setattr(appSettings, attrStr, obj[attrStr])

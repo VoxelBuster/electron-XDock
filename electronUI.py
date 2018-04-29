@@ -15,6 +15,9 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "{},{}".format(winx, winy)
 
 pygame.init()
 
+print 'Reading app settings file'
+assetLoader.readSettings()
+
 display = None
 
 info = pygame.display.Info()
@@ -60,14 +63,14 @@ assetLoader.loadImage('power_icon')
 assetLoader.loadImage('power_icon_hl')
 assetLoader.loadImage('search_icon')
 assetLoader.loadImage('search_icon_hl')
+assetLoader.loadImage('cb_checked')
+assetLoader.loadImage('cb_unchecked')
 
 assetLoader.loadFont('header', 96)
 assetLoader.loadFont('monospace', 48)
-bgImage = None
 
-if appSettings.useBgImage:
-    bgImage = pygame.transform.smoothscale(assetLoader.loadExtImg(appSettings.bgImage),
-                                           (display.get_width(), display.get_height()))
+bgImage = pygame.transform.smoothscale(assetLoader.loadExtImg(appSettings.bgImage),
+                                       (display.get_width(), display.get_height()))
 
 
 def blit_alpha(target, source, location, opacity):
@@ -205,6 +208,14 @@ tempSurf = assetLoader.imageMap['search_icon_hl']
 search_icon_hl = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio),
                                                          int(tempSurf.get_height() * appSettings.screenRatio)))
 
+tempSurf = assetLoader.imageMap['cb_checked']
+cb_checked = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio * 0.125),
+                                                     int(tempSurf.get_height() * appSettings.screenRatio * 0.125)))
+
+tempSurf = assetLoader.imageMap['cb_unchecked']
+cb_unchecked = pygame.transform.smoothscale(tempSurf, (int(tempSurf.get_width() * appSettings.screenRatio * 0.125),
+                                                       int(tempSurf.get_height() * appSettings.screenRatio * 0.125)))
+
 hour = datetime.now().hour % 12
 if hour == 0:
     hour = 12
@@ -216,6 +227,41 @@ settingsHeaderSurf = assetLoader.fontsMap['monospace'].render('Settings', 1, vox
 settingsHeaderSurf = pygame.transform.smoothscale(settingsHeaderSurf,
                                                   (int(appSettings.screenRatio * settingsHeaderSurf.get_width()),
                                                    int(appSettings.screenRatio * settingsHeaderSurf.get_height())))
+dispSettingsLabel = assetLoader.fontsMap['monospace'].render('Display Settings', 1,
+                                                             voxMath.hexToRGB(appSettings.themeColor))
+dispSettingsLabel = pygame.transform.smoothscale(dispSettingsLabel,
+                                                 (int(appSettings.screenRatio * dispSettingsLabel.get_width()),
+                                                  int(appSettings.screenRatio * dispSettingsLabel.get_height())))
+time12HrLabel = assetLoader.fontsMap['monospace'].render('12-Hour Time', 1, voxMath.hexToRGB(appSettings.themeColor))
+time12HrLabel = pygame.transform.smoothscale(time12HrLabel,
+                                             (int(appSettings.screenRatio * time12HrLabel.get_width()),
+                                              int(appSettings.screenRatio * time12HrLabel.get_height())))
+winBgLabel = assetLoader.fontsMap['monospace'].render('Use Desktop BG', 1,
+                                                      voxMath.hexToRGB(appSettings.themeColor))
+winBgLabel = pygame.transform.smoothscale(winBgLabel,
+                                          (int(appSettings.screenRatio * winBgLabel.get_width()),
+                                           int(appSettings.screenRatio * winBgLabel.get_height())))
+useBgImgLabel = assetLoader.fontsMap['monospace'].render('Background Image', 1,
+                                                         voxMath.hexToRGB(appSettings.themeColor))
+useBgImgLabel = pygame.transform.smoothscale(useBgImgLabel,
+                                             (int(appSettings.screenRatio * useBgImgLabel.get_width()),
+                                              int(appSettings.screenRatio * useBgImgLabel.get_height())))
+hwAccelLabel = assetLoader.fontsMap['monospace'].render('HW Acceleration', 1, voxMath.hexToRGB(appSettings.themeColor))
+hwAccelLabel = pygame.transform.smoothscale(hwAccelLabel,
+                                                  (int(appSettings.screenRatio * hwAccelLabel.get_width()),
+                                                   int(appSettings.screenRatio * hwAccelLabel.get_height())))
+showFPSLabel = assetLoader.fontsMap['monospace'].render('Show FPS', 1, voxMath.hexToRGB(appSettings.themeColor))
+showFPSLabel = pygame.transform.smoothscale(showFPSLabel,
+                                                  (int(appSettings.screenRatio * showFPSLabel.get_width()),
+                                                   int(appSettings.screenRatio * showFPSLabel.get_height())))
+fgScaleLabel = assetLoader.fontsMap['monospace'].render('FG Scale: ' + str(appSettings.screenRatio), 1, voxMath.hexToRGB(appSettings.themeColor))
+fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
+                                                  (int(appSettings.screenRatio * fgScaleLabel.get_width()),
+                                                   int(appSettings.screenRatio * fgScaleLabel.get_height())))
+restartLabel = assetLoader.fontsMap['monospace'].render('Restart to apply', 1, voxMath.hexToRGB('#ff0000'))
+restartLabel = pygame.transform.smoothscale(fgScaleLabel,
+                                                  (int(appSettings.screenRatio * fgScaleLabel.get_width()),
+                                                   int(appSettings.screenRatio * fgScaleLabel.get_height())))
 
 expandMainMenu = False
 showSettings = False
@@ -225,6 +271,8 @@ gamesRect = pygame.Rect(0, 0, 0, 0)
 gearRect = pygame.Rect(0, 0, 0, 0)
 searchRect = pygame.Rect(0, 0, 0, 0)
 powerRect = pygame.Rect(0, 0, 0, 0)
+
+needRestart = False
 
 
 def draw():
@@ -263,7 +311,7 @@ def draw():
         animations['mm_expand'].advance()
         absAlpha = 255 * float(animations['mm_expand'].getCurrentFrame()) / 10.0
         centerRadius -= exit_icon.get_width() - (
-            exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
+                exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
         tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
         exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
         if exitRect.collidepoint(pygame.mouse.get_pos()):
@@ -339,7 +387,45 @@ def draw():
         s = pygame.Surface((display.get_width() / 4, display.get_height()), pygame.HWSURFACE)
         s.set_alpha(196)  # alpha level
         s.fill(voxMath.hexToRGB(appSettings.themeAccentColor))
-        s.blit(settingsHeaderSurf, (20, 20))
+        s.blit(settingsHeaderSurf, (10, 20))
+        s.blit(time12HrLabel, (25, 75))
+        s.blit(useBgImgLabel, (25, 130))
+        s.blit(winBgLabel, (25, 185))
+        timeLabelRect = pygame.Rect(0, 0, time12HrLabel.get_width(), time12HrLabel.get_height())
+        wbgRect = pygame.Rect(0, 0, winBgLabel.get_width(), winBgLabel.get_height())
+        useBgRect = pygame.Rect(0, 0, useBgImgLabel.get_width(), useBgImgLabel.get_height())
+        hwAccelRect = pygame.Rect(0, 0, hwAccelLabel.get_width(), hwAccelLabel.get_height())
+        showFPSRect = pygame.Rect(0, 0, showFPSLabel.get_width(), showFPSLabel.get_height())
+        fgScaleRect = pygame.Rect(0, 0, fgScaleLabel.get_width(), fgScaleLabel.get_height())
+        cbRect = pygame.Rect(0, 0, cb_checked.get_width(), cb_checked.get_height())
+        if appSettings.time12Hr:
+            s.blit(cb_checked,
+                   (25 + time12HrLabel.get_width() + 20, voxMath.alignVertCenters(timeLabelRect, cbRect) + 75))
+        else:
+            s.blit(cb_unchecked, (25 + time12HrLabel.get_width() + 20, voxMath.alignVertCenters(timeLabelRect, cbRect) + 75))
+        if appSettings.useBgImage:
+            s.blit(cb_checked,
+                   (25 + useBgImgLabel.get_width() + 20, voxMath.alignVertCenters(useBgRect, cbRect) + 130))
+        else:
+            s.blit(cb_unchecked, (25 + useBgImgLabel.get_width() + 20, voxMath.alignVertCenters(useBgRect, cbRect) + 130))
+        if appSettings.useWinBg:
+            s.blit(cb_checked, (25 + winBgLabel.get_width() + 20, voxMath.alignVertCenters(wbgRect, cbRect) + 185))
+        else:
+            s.blit(cb_unchecked, (25 + winBgLabel.get_width() + 20, voxMath.alignVertCenters(wbgRect, cbRect) + 185))
+        s.blit(dispSettingsLabel, (25, 300))
+        s.blit(hwAccelLabel, (25, 355))
+        s.blit(fgScaleLabel, (25, 410))
+        s.blit(showFPSLabel, (25, 465))
+        if appSettings.hwAccel:
+            s.blit(cb_checked, (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
+        else:
+            s.blit(cb_unchecked, (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
+        if appSettings.fpsCounter:
+            s.blit(cb_checked, (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
+        else:
+            s.blit(cb_unchecked, (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
+        if needRestart:
+            s.blit(restartLabel, (25, s.get_height() - 60))
         display.blit(s, (display.get_width() - float(s.get_width())
                          * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
     if appSettings.fpsCounter:
@@ -363,7 +449,7 @@ running = True
 
 
 def eventLoop():
-    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -379,8 +465,9 @@ def eventLoop():
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
                     elif gearRect.collidepoint(pygame.mouse.get_pos()):
-                        print 'clicked'
-                        showSettings = True
+                        showSettings = not showSettings
+                        if not showSettings:
+                            animations['settings_expand'].reset()
                         expandMainMenu = False
                     elif powerRect.collidepoint(pygame.mouse.get_pos()):
                         pass
@@ -394,13 +481,44 @@ def eventLoop():
                         animations['mm_expand'].reverse = True
                     else:
                         animations['mm_expand'].reverse = False
+                if showSettings:
+                    settingsXY = (display.get_width() - display.get_width() / 4, 0)
+                    rowRect = pygame.Rect(settingsXY[0], 75, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.time12Hr = not appSettings.time12Hr
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 130, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.useBgImage = not appSettings.useBgImage
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 185, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.useWinBg = not appSettings.useWinBg
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 355, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.hwAccel = not appSettings.hwAccel
+                        needRestart = True
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 465, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.fpsCounter = not appSettings.fpsCounter
+                        assetLoader.writeOutSettings()
         updateClient()
-        hour = datetime.now().hour % 12
-        if hour == 0:
-            hour = 12
+        if appSettings.time12Hr:
+            hour = datetime.now().hour % 12
+            if hour == 0:
+                hour = 12
+        else:
+            hour = datetime.now().hour
         minute = datetime.now().minute
         timeStr = '{:02d}'.format(hour) + ' : ' + '{:02d}'.format(minute)
         timeSurf = assetLoader.fontsMap['header'].render(timeStr, 1, voxMath.hexToRGB('#00fbfe'))
+        fgScaleLabel = assetLoader.fontsMap['monospace'].render('FG Scale: ' + str(appSettings.screenRatio), 1,
+                                                                voxMath.hexToRGB(appSettings.themeColor))
+        fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
+                                                    (int(appSettings.screenRatio * fgScaleLabel.get_width()),
+                                                     int(appSettings.screenRatio * fgScaleLabel.get_height())))
         if not expandMainMenu:
             animations['mm_expand'].reset()
         for i in range(0, 5):
