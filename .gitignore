@@ -6,3 +6,5 @@ target/
 *.pyc
 electron_archive.zip
 \.idea/workspace\.xml
+
+user/

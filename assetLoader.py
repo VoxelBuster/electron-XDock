@@ -62,13 +62,27 @@ def loadFont(fid, size):
 
 def writeOutSettings():
     obj = {}
-    os.makedirs(appSettings.dataDir)
+    if not os.path.isdir(appSettings.dataDir):
+        os.makedirs(appSettings.dataDir)
     for attrStr in dir(appSettings):
-        obj[attrStr] = getattr(appSettings, attrStr)
+        if attrStr.startswith('__'):
+            continue
+        else:
+            obj[attrStr] = str(getattr(appSettings, attrStr))
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 def readSettings():
     if os.path.exists(appSettings.dataDir + 'appSettings.json'):
         obj = json.load(open(appSettings.dataDir + 'appSettings.json', 'r'))
         for attrStr in dir(appSettings):
-            setattr(appSettings, attrStr, obj[attrStr])
+            if attrStr.startswith('__'):
+                continue
+            else:
+                if type(getattr(appSettings, attrStr)) is int:
+                    setattr(appSettings, attrStr, int(obj[attrStr]))
+                elif type(getattr(appSettings, attrStr)) is bool:
+                    setattr(appSettings, attrStr, bool(obj[attrStr]))
+                elif type(getattr(appSettings, attrStr)) is float:
+                    setattr(appSettings, attrStr, float(obj[attrStr]))
+                else:
+                    setattr(appSettings, attrStr, obj[attrStr])

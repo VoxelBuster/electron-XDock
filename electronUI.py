@@ -1,5 +1,6 @@
 from datetime import datetime
 from pymunk.vec2d import Vec2d
+import tkMessageBox
 import pygame
 import appSettings
 import socket
@@ -130,6 +131,8 @@ def updateClient():
                     for filename in files:
                         shortcuts.append(os.path.join(path, directory, filename))
             print shortcuts
+        elif 'fgScale' in items[j]:
+            appSettings.screenRatio = float(items[j + 1])
     ticksUntilBattData -= 1
 
 
@@ -259,9 +262,9 @@ fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
                                                   (int(appSettings.screenRatio * fgScaleLabel.get_width()),
                                                    int(appSettings.screenRatio * fgScaleLabel.get_height())))
 restartLabel = assetLoader.fontsMap['monospace'].render('Restart to apply', 1, voxMath.hexToRGB('#ff0000'))
-restartLabel = pygame.transform.smoothscale(fgScaleLabel,
-                                                  (int(appSettings.screenRatio * fgScaleLabel.get_width()),
-                                                   int(appSettings.screenRatio * fgScaleLabel.get_height())))
+restartLabel = pygame.transform.smoothscale(restartLabel,
+                                                  (int(appSettings.screenRatio * restartLabel.get_width()),
+                                                   int(appSettings.screenRatio * restartLabel.get_height())))
 
 expandMainMenu = False
 showSettings = False
@@ -498,6 +501,11 @@ def eventLoop():
                     rowRect = pygame.Rect(settingsXY[0], 355, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
                         appSettings.hwAccel = not appSettings.hwAccel
+                        needRestart = True
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 410, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        client.send('edit_fgScale_pref\n')
                         needRestart = True
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 465, display.get_width() / 4, 45)

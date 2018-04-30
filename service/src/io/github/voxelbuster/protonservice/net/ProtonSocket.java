@@ -6,6 +6,7 @@ import io.github.voxelbuster.protonservice.util.SystemAPI;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -45,6 +46,16 @@ public class ProtonSocket {
                             } else if (msg.equals("quit")) {
                                 Debug.log("Client requested service shutdown...");
                                 socket.close();
+                            } else if (msg.contains("edit_fgScale_pref")) {
+//                                new Thread(() -> {
+                                    String prefEdit = JOptionPane.showInputDialog(null, "Foreground Scale Factor", "Edit Preference", JOptionPane.QUESTION_MESSAGE);
+                                    try {
+                                        float f = Float.parseFloat(prefEdit);
+                                        outBuffer.add("fgScale;" + f);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+//                                }).start();
                             }
                         }
                     } catch (Exception e) {

@@ -5,12 +5,13 @@ import io.github.voxelbuster.protonservice.net.ProtonSocket;
 import io.github.voxelbuster.protonservice.util.AppSettings;
 import io.github.voxelbuster.protonservice.util.Debug;
 
+import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 
 public class Main {
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
         Debug.log("Starting protonService");
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         AppSettings.dataDir = System.getProperty("user.home") + "/electronXDock/data/";
         if (!new File(AppSettings.dataDir + "user/").isDirectory()) {
             Debug.log("Creating user data directory at " + AppSettings.dataDir + "user/");
