@@ -10,6 +10,7 @@ from pymunk.vec2d import Vec2d
 import animation
 import appSettings
 import assetLoader
+import gradients
 import voxMath
 
 # preset window position -- borderless fullscreen
@@ -282,6 +283,7 @@ powerRect = pygame.Rect(0, 0, 0, 0)
 
 needRestart = False
 
+scrollOffset = 0
 
 def draw():
     global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf
@@ -442,6 +444,14 @@ def draw():
             s.blit(restartLabel, (25, s.get_height() - 60))
         display.blit(s, (display.get_width() - float(s.get_width())
                          * float(animations['settings_expand'].getCurrentFrame() + 1) / 10.0, 0))
+
+    for idx in range(len(selectWheelItems)):
+        accentRgb = voxMath.hexToRGB(appSettings.themeAccentColor)
+        gradRect = pygame.Rect(0, 0, (display.get_width() - centercircle.get_width()) / 2, display.get_height() / 8)
+        itemSurf = gradients.horizontal((gradRect.width, gradRect.height), voxMath.addAlphaChannel(accentRgb, 0), voxMath.addAlphaChannel(accentRgb, 127))
+        opacity = int(255 * float(1.0/float(idx + 1)))
+        print opacity
+        blit_alpha(display, itemSurf, (display.get_width() - gradRect.width, voxMath.alignVertCenters(pygame.Rect((0,0), display.get_size()), gradRect) + (gradRect.height + 15) * idx), opacity)
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB(appSettings.themeColor))
@@ -463,7 +473,7 @@ running = True
 
 
 def eventLoop():
-    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart, selectWheelItems
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -474,6 +484,7 @@ def eventLoop():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
+            # elif event.type == pygame.
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if expandMainMenu:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
@@ -486,9 +497,7 @@ def eventLoop():
                     elif powerRect.collidepoint(pygame.mouse.get_pos()):
                         showSettings = False
                         animations['settings_expand'].reset()
-                        selectWheelItems.append('Shut Down')
-                        selectWheelItems.append('Reboot')
-                        selectWheelItems.append('Suspend')
+                        selectWheelItems = ['Shut Down', 'Reboot', 'Suspend']
                     elif searchRect.collidepoint(pygame.mouse.get_pos()):
                         showSettings = False
                         animations['settings_expand'].reset()
