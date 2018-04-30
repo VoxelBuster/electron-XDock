@@ -32,6 +32,7 @@ imageMap = {}
 
 fontsMap = {}
 
+
 def loadImage(imgid):
     temp = pygame.image.load(images[imgid])
     if appSettings.hwAccel:
@@ -44,6 +45,7 @@ def loadImage(imgid):
     surf.blit(temp, (0, 0))
     imageMap[imgid] = surf
 
+
 def loadExtImg(filename):
     temp = pygame.image.load(filename)
     if appSettings.hwAccel:
@@ -55,6 +57,7 @@ def loadExtImg(filename):
     surf.fill((0, 0, 0, 0))
     surf.blit(temp, (0, 0))
     return surf
+
 
 def loadFont(fid, size):
     fontsMap[fid] = pygame.font.Font(fonts[fid], size)
@@ -70,6 +73,7 @@ def writeOutSettings():
         else:
             obj[attrStr] = str(getattr(appSettings, attrStr))
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
+
 
 def readSettings():
     if os.path.exists(appSettings.dataDir + 'appSettings.json'):

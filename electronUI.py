@@ -1,15 +1,16 @@
-from datetime import datetime
-from pymunk.vec2d import Vec2d
-import tkMessageBox
-import pygame
-import appSettings
-import socket
-import voxMath
 import json
-import animation
-import assetLoader
 import os
 import re
+import socket
+from datetime import datetime
+
+import pygame
+from pymunk.vec2d import Vec2d
+
+import animation
+import appSettings
+import assetLoader
+import voxMath
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
@@ -133,7 +134,7 @@ def updateClient():
                         shortcuts.append(os.path.join(path, directory, filename))
             print shortcuts
         elif 'fgScale' in items[j]:
-            appSettings.screenRatio = float(re.sub('[^0-9]','', items[j+1]))
+            appSettings.screenRatio = float(re.sub('[^0-9]', '', items[j + 1]))
     ticksUntilBattData -= 1
 
 
@@ -254,20 +255,21 @@ useBgImgLabel = pygame.transform.smoothscale(useBgImgLabel,
                                               int(appSettings.screenRatio * useBgImgLabel.get_height())))
 hwAccelLabel = assetLoader.fontsMap['monospace'].render('HW Acceleration', 1, voxMath.hexToRGB(appSettings.themeColor))
 hwAccelLabel = pygame.transform.smoothscale(hwAccelLabel,
-                                                  (int(appSettings.screenRatio * hwAccelLabel.get_width()),
-                                                   int(appSettings.screenRatio * hwAccelLabel.get_height())))
+                                            (int(appSettings.screenRatio * hwAccelLabel.get_width()),
+                                             int(appSettings.screenRatio * hwAccelLabel.get_height())))
 showFPSLabel = assetLoader.fontsMap['monospace'].render('Show FPS', 1, voxMath.hexToRGB(appSettings.themeColor))
 showFPSLabel = pygame.transform.smoothscale(showFPSLabel,
-                                                  (int(appSettings.screenRatio * showFPSLabel.get_width()),
-                                                   int(appSettings.screenRatio * showFPSLabel.get_height())))
-fgScaleLabel = assetLoader.fontsMap['monospace'].render('FG Scale: ' + str(appSettings.screenRatio), 1, voxMath.hexToRGB(appSettings.themeColor))
+                                            (int(appSettings.screenRatio * showFPSLabel.get_width()),
+                                             int(appSettings.screenRatio * showFPSLabel.get_height())))
+fgScaleLabel = assetLoader.fontsMap['monospace'].render('FG Scale: ' + str(appSettings.screenRatio), 1,
+                                                        voxMath.hexToRGB(appSettings.themeColor))
 fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
-                                                  (int(appSettings.screenRatio * fgScaleLabel.get_width()),
-                                                   int(appSettings.screenRatio * fgScaleLabel.get_height())))
+                                            (int(appSettings.screenRatio * fgScaleLabel.get_width()),
+                                             int(appSettings.screenRatio * fgScaleLabel.get_height())))
 restartLabel = assetLoader.fontsMap['monospace'].render('Restart to apply', 1, voxMath.hexToRGB('#ff0000'))
 restartLabel = pygame.transform.smoothscale(restartLabel,
-                                                  (int(appSettings.screenRatio * restartLabel.get_width()),
-                                                   int(appSettings.screenRatio * restartLabel.get_height())))
+                                            (int(appSettings.screenRatio * restartLabel.get_width()),
+                                             int(appSettings.screenRatio * restartLabel.get_height())))
 
 expandMainMenu = False
 showSettings = False
@@ -408,12 +410,14 @@ def draw():
             s.blit(cb_checked,
                    (25 + time12HrLabel.get_width() + 20, voxMath.alignVertCenters(timeLabelRect, cbRect) + 75))
         else:
-            s.blit(cb_unchecked, (25 + time12HrLabel.get_width() + 20, voxMath.alignVertCenters(timeLabelRect, cbRect) + 75))
+            s.blit(cb_unchecked,
+                   (25 + time12HrLabel.get_width() + 20, voxMath.alignVertCenters(timeLabelRect, cbRect) + 75))
         if appSettings.useBgImage:
             s.blit(cb_checked,
                    (25 + useBgImgLabel.get_width() + 20, voxMath.alignVertCenters(useBgRect, cbRect) + 130))
         else:
-            s.blit(cb_unchecked, (25 + useBgImgLabel.get_width() + 20, voxMath.alignVertCenters(useBgRect, cbRect) + 130))
+            s.blit(cb_unchecked,
+                   (25 + useBgImgLabel.get_width() + 20, voxMath.alignVertCenters(useBgRect, cbRect) + 130))
         if appSettings.useWinBg:
             s.blit(cb_checked, (25 + winBgLabel.get_width() + 20, voxMath.alignVertCenters(wbgRect, cbRect) + 185))
         else:
@@ -423,13 +427,17 @@ def draw():
         s.blit(fgScaleLabel, (25, 410))
         s.blit(showFPSLabel, (25, 465))
         if appSettings.hwAccel:
-            s.blit(cb_checked, (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
+            s.blit(cb_checked,
+                   (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
         else:
-            s.blit(cb_unchecked, (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
+            s.blit(cb_unchecked,
+                   (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
         if appSettings.fpsCounter:
-            s.blit(cb_checked, (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
+            s.blit(cb_checked,
+                   (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
         else:
-            s.blit(cb_unchecked, (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
+            s.blit(cb_unchecked,
+                   (25 + showFPSLabel.get_width() + 20, voxMath.alignVertCenters(showFPSRect, cbRect) + 465))
         if needRestart:
             s.blit(restartLabel, (25, s.get_height() - 60))
         display.blit(s, (display.get_width() - float(s.get_width())
@@ -514,8 +522,8 @@ def eventLoop():
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 410, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
-                        #client.send('edit_fgScale_pref\n')
-                        #needRestart = True
+                        # client.send('edit_fgScale_pref\n')
+                        # needRestart = True
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 465, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
