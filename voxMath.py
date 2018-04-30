@@ -11,3 +11,9 @@ def addAlphaChannel(rgb, a):
 def hexToRGB(hexStr):
     h = hexStr.lstrip('#')
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+def map(fromFloor, fromCeil, toFloor, toCeil, x):
+    fromDelta = fromCeil - fromFloor
+    toDelta = toCeil - toFloor
+    scaled = float(x - fromFloor) / float(fromDelta)
+    return toFloor + (scaled * toDelta)

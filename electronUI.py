@@ -2,6 +2,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 from datetime import datetime
 
 import pygame
@@ -90,6 +91,18 @@ def blit_alpha(target, source, location, opacity):
     target.blit(temp, location)
 
 
+def command(cmdstr):
+    if cmdstr == 'Shut Down':
+        subprocess.Popen('shutdown -s', shell=True)
+    elif cmdstr == 'Reboot':
+        subprocess.Popen('shutdown -r', shell=True)
+    elif cmdstr == 'Suspend': # hibernate needs to be off otherwise you might get a nasty bootloop like I did
+        subprocess.Popen('powercfg -hibernate off', shell=True)
+        subprocess.Popen('%windir%\\System32\\rundll32.exe powrprof.dll,SetSuspendState Standby', shell=True)
+    else:
+        print cmdstr.replace('\\\\','\\')
+        subprocess.Popen('"' + cmdstr.replace('\\\\','\\') + '"', shell=True)
+
 ticksUntilBattData = 5
 
 batteryLevel = 0
@@ -159,6 +172,8 @@ animations = {
 }
 
 selectWheelItems = []
+selectWheelCommands = []
+selectWheelContext = 0
 
 centerScreen = (display.get_width() / 2, display.get_height() / 2)
 
@@ -283,10 +298,15 @@ powerRect = pygame.Rect(0, 0, 0, 0)
 
 needRestart = False
 
+scrollDelta = 0
+totalScroll = 0
 scrollOffset = 0
+scrollMenuClick = False
 
+
+# REALLY BAD CODING PAST THIS POINT
 def draw():
-    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf
+    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg:
@@ -448,10 +468,32 @@ def draw():
     for idx in range(len(selectWheelItems)):
         accentRgb = voxMath.hexToRGB(appSettings.themeAccentColor)
         gradRect = pygame.Rect(0, 0, (display.get_width() - centercircle.get_width()) / 2, display.get_height() / 8)
-        itemSurf = gradients.horizontal((gradRect.width, gradRect.height), voxMath.addAlphaChannel(accentRgb, 0), voxMath.addAlphaChannel(accentRgb, 127))
-        opacity = int(255 * float(1.0/float(idx + 1)))
-        print opacity
-        blit_alpha(display, itemSurf, (display.get_width() - gradRect.width, voxMath.alignVertCenters(pygame.Rect((0,0), display.get_size()), gradRect) + (gradRect.height + 15) * idx), opacity)
+        centerY = voxMath.alignVertCenters(pygame.Rect((0,0), display.get_size()), gradRect)
+        gradSpacing = (gradRect.height + 15)
+        totalScroll += scrollDelta * gradSpacing
+        scrollDelta = 0
+        if totalScroll < -1:
+            totalScroll += 2
+            scrollOffset -= 2
+        elif totalScroll > 1:
+            totalScroll -= 2
+            scrollOffset += 2
+        distanceFromCenterY = scrollOffset + gradSpacing * idx
+        if distanceFromCenterY + centerY > display.get_height() or distanceFromCenterY + centerY < 0:
+            continue # don't draw stuff that isnt on the screen
+        itemSurf = gradients.horizontal((gradRect.width, gradRect.height), voxMath.addAlphaChannel(accentRgb, 0),
+                                        voxMath.addAlphaChannel(accentRgb, 127))
+        surfText = assetLoader.fontsMap['monospace'].render(selectWheelItems[idx], 0, (255, 255, 255))
+        itemSurf.blit(surfText, voxMath.centerObject(pygame.Rect(0, 0, surfText.get_width(), surfText.get_height()), gradRect))
+        opacity = int(voxMath.map(0, 512, 255, 0, float(abs(distanceFromCenterY))))
+        blit_alpha(display, itemSurf, (display.get_width() - gradRect.width, centerY + distanceFromCenterY), opacity)
+        if scrollMenuClick: # woo event handling in the render function
+            if pygame.Rect(0, centerY + distanceFromCenterY, display.get_width(), gradRect.height).collidepoint(pygame.mouse.get_pos()):
+                if selectWheelContext == 1:
+                    command(selectWheelItems[idx])
+                else:
+                    command(selectWheelCommands[idx])
+    scrollMenuClick = False
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB(appSettings.themeColor))
@@ -473,7 +515,7 @@ running = True
 
 
 def eventLoop():
-    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart, selectWheelItems
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart, selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -486,7 +528,15 @@ def eventLoop():
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
             # elif event.type == pygame.
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if expandMainMenu:
+                if selectWheelContext > 0:
+                    if event.button == 4:
+                        scrollDelta += 1
+                    elif event.button == 5:
+                        scrollDelta -= 1
+                    elif event.button == 1: # oh god this is where it gets dicey
+                        if pygame.mouse.get_pos()[0] > float(display.get_width()) * 0.8:
+                            scrollMenuClick = True
+                if expandMainMenu and event.button == 1:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
                     elif gearRect.collidepoint(pygame.mouse.get_pos()):
@@ -497,20 +547,34 @@ def eventLoop():
                     elif powerRect.collidepoint(pygame.mouse.get_pos()):
                         showSettings = False
                         animations['settings_expand'].reset()
+                        scrollOffset = 0
+                        selectWheelContext = 1
                         selectWheelItems = ['Shut Down', 'Reboot', 'Suspend']
                     elif searchRect.collidepoint(pygame.mouse.get_pos()):
+                        selectWheelContext = 2
+                        scrollOffset = 0
+                        selectWheelItems = []
+                        selectWheelCommands = []
+                        for sc in shortcuts:
+                            templist = sc.split('\\')
+                            selectWheelItems.append(templist[len(templist) - 1].replace('.lnk',''))
+                            selectWheelCommands.append(sc)
                         showSettings = False
                         animations['settings_expand'].reset()
                     elif gamesRect.collidepoint(pygame.mouse.get_pos()):
+                        scrollOffset = 0
+                        selectWheelContext = 3
                         showSettings = False
                         animations['settings_expand'].reset()
-                if ccRect.collidepoint(pygame.mouse.get_pos()):
+                if ccRect.collidepoint(pygame.mouse.get_pos()) and event.button == 1:
                     expandMainMenu = not expandMainMenu
                     if not expandMainMenu:
                         animations['mm_expand'].reverse = True
                     else:
                         animations['mm_expand'].reverse = False
-                if showSettings:
+                if showSettings and event.button == 1:
+                    selectWheelContext = 0
+                    selectWheelItems = []
                     settingsXY = (display.get_width() - display.get_width() / 4, 0)
                     rowRect = pygame.Rect(settingsXY[0], 75, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
