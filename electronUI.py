@@ -9,6 +9,7 @@ import json
 import animation
 import assetLoader
 import os
+import re
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
@@ -132,7 +133,7 @@ def updateClient():
                         shortcuts.append(os.path.join(path, directory, filename))
             print shortcuts
         elif 'fgScale' in items[j]:
-            appSettings.screenRatio = float(items[j + 1])
+            appSettings.screenRatio = float(re.sub('[^0-9]','', items[j+1]))
     ticksUntilBattData -= 1
 
 
@@ -154,6 +155,8 @@ animations = {
     'mm_icon_exit5': animation.GUIAnimator(15),
     'settings_expand': animation.GUIAnimator(10)
 }
+
+selectWheelItems = []
 
 centerScreen = (display.get_width() / 2, display.get_height() / 2)
 
@@ -473,11 +476,17 @@ def eventLoop():
                             animations['settings_expand'].reset()
                         expandMainMenu = False
                     elif powerRect.collidepoint(pygame.mouse.get_pos()):
-                        pass
+                        showSettings = False
+                        animations['settings_expand'].reset()
+                        selectWheelItems.append('Shut Down')
+                        selectWheelItems.append('Reboot')
+                        selectWheelItems.append('Suspend')
                     elif searchRect.collidepoint(pygame.mouse.get_pos()):
-                        pass
+                        showSettings = False
+                        animations['settings_expand'].reset()
                     elif gamesRect.collidepoint(pygame.mouse.get_pos()):
-                        pass
+                        showSettings = False
+                        animations['settings_expand'].reset()
                 if ccRect.collidepoint(pygame.mouse.get_pos()):
                     expandMainMenu = not expandMainMenu
                     if not expandMainMenu:
@@ -505,8 +514,8 @@ def eventLoop():
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 410, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
-                        client.send('edit_fgScale_pref\n')
-                        needRestart = True
+                        #client.send('edit_fgScale_pref\n')
+                        #needRestart = True
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 465, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):

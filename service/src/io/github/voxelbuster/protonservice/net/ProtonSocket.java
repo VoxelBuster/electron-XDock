@@ -47,7 +47,7 @@ public class ProtonSocket {
                                 Debug.log("Client requested service shutdown...");
                                 socket.close();
                             } else if (msg.contains("edit_fgScale_pref")) {
-//                                new Thread(() -> {
+                                new Thread(() -> {
                                     String prefEdit = JOptionPane.showInputDialog(null, "Foreground Scale Factor", "Edit Preference", JOptionPane.QUESTION_MESSAGE);
                                     try {
                                         float f = Float.parseFloat(prefEdit);
@@ -55,7 +55,7 @@ public class ProtonSocket {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-//                                }).start();
+                                }).start();
                             }
                         }
                     } catch (Exception e) {
