@@ -67,11 +67,21 @@ def writeOutSettings():
     obj = {}
     if not os.path.isdir(appSettings.dataDir):
         os.makedirs(appSettings.dataDir)
-    for attrStr in dir(appSettings):
-        if attrStr.startswith('__'):
-            continue
-        else:
-            obj[attrStr] = str(getattr(appSettings, attrStr))
+    obj['dataDir'] = appSettings.dataDir
+    obj['debug'] = appSettings.debug
+    obj['time12Hr'] = appSettings.time12Hr
+    obj['screenRatio'] = appSettings.screenRatio
+    obj['fpsMax'] = appSettings.fpsMax
+    obj['doubleBuffer'] = appSettings.doubleBuffer
+    obj['textGlow'] = appSettings.textGlow
+    obj['fpsCounter'] = appSettings.fpsCounter
+    obj['useBgImage'] = appSettings.useBgImage
+    obj['useWinBg'] = appSettings.useWinBg
+    obj['bgColor'] = appSettings.bgColor
+    obj['themeColor'] = appSettings.themeColor
+    obj['themeAccentColor'] = appSettings.themeAccentColor
+    obj['bgImage'] = appSettings.bgImage
+    obj['hwAccel'] = appSettings.hwAccel
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 
