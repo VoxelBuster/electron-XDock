@@ -88,15 +88,19 @@ def writeOutSettings():
 def readSettings():
     if os.path.exists(appSettings.dataDir + 'appSettings.json'):
         obj = json.load(open(appSettings.dataDir + 'appSettings.json', 'r'))
-        for attrStr in dir(appSettings):
-            if attrStr.startswith('__'):
-                continue
-            else:
-                if type(getattr(appSettings, attrStr)) is int:
-                    setattr(appSettings, attrStr, int(obj[attrStr]))
-                elif type(getattr(appSettings, attrStr)) is bool:
-                    setattr(appSettings, attrStr, bool(obj[attrStr]))
-                elif type(getattr(appSettings, attrStr)) is float:
-                    setattr(appSettings, attrStr, float(obj[attrStr]))
-                else:
-                    setattr(appSettings, attrStr, obj[attrStr])
+        appSettings.dataDir = obj['dataDir']
+        appSettings.debug = obj['debug']
+        appSettings.time12Hr = obj['time12Hr']
+        appSettings.screenRatio = obj['screenRatio']
+        appSettings.fpsMax = obj['fpsMax']
+        appSettings.doubleBuffer = obj['doubleBuffer']
+        appSettings.textGlow = obj['textGlow']
+        appSettings.fpsCounter = obj['fpsCounter']
+        appSettings.useBgImage = obj['useBgImage']
+        appSettings.useWinBg = obj['useWinBg']
+        appSettings.bgColor = obj['bgColor']
+        appSettings.themeColor = obj['themeColor']
+        appSettings.themeAccentColor = obj['themeAccentColor']
+        appSettings.bgImage = obj['bgImage']
+        appSettings.hwAccel = obj['hwAccel']
+

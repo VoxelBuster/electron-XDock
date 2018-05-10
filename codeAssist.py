@@ -24,3 +24,4 @@ if sys.argv[1] == 'dictify':
         f.write(line + '\n')
     f.close()
     print 'Operation completed'
+

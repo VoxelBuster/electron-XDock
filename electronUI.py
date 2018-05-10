@@ -11,6 +11,7 @@ from pymunk.vec2d import Vec2d
 import animation
 import appSettings
 import assetLoader
+import constants
 import gradients
 import voxMath
 
@@ -510,9 +511,7 @@ def render():
     animations['battery_bar'].advance()
     draw()
 
-
 running = True
-
 
 def eventLoop():
     global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart, selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset
@@ -595,8 +594,14 @@ def eventLoop():
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 410, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
-                        # client.send('edit_fgScale_pref\n')
-                        # needRestart = True
+                        for i in constants.fgRatioList:
+                            if appSettings.screenRatio == constants.fgRatioList[len(constants.fgRatioList) - 1]:
+                                appSettings.screenRatio = constants.fgRatioList[0]
+                                break
+                            if appSettings.screenRatio < i:
+                                appSettings.screenRatio = i
+                                break
+                        needRestart = True
                         assetLoader.writeOutSettings()
                     rowRect = pygame.Rect(settingsXY[0], 465, display.get_width() / 4, 45)
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
