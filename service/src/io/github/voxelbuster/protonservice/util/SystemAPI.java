@@ -16,6 +16,10 @@ public class SystemAPI {
             System.getenv("APPDATA") + "\\Microsoft\\Windows\\Start Menu\\Programs\\"
     };
 
+    public static final String[] gamesPaths = {
+            System.getenv("APPDATA") + "\\Microsoft\\Windows\\Start Menu\\Programs\\Steam\\"
+    };
+
     public static double getBattery() {
         Kernel32.SYSTEM_POWER_STATUS powerStatus = new Kernel32.SYSTEM_POWER_STATUS();
         Kernel32.INSTANCE.GetSystemPowerStatus(powerStatus);

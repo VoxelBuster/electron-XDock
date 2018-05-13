@@ -14,6 +14,7 @@ import assetLoader
 import constants
 import gradients
 import voxMath
+import audioVis
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
@@ -45,6 +46,8 @@ else:
 pygame.display.set_caption('Windows X Holo Dock')
 assetLoader.loadImage('appicon')
 pygame.display.set_icon(assetLoader.imageMap['appicon'])
+
+# display.convert()
 
 print 'Connecting to service socket'
 try:
@@ -112,11 +115,13 @@ isCharging = False
 winBg = None
 
 smPaths = []
+gamePaths = []
 shortcuts = []
+games = []
 
 
 def updateClient():
-    global ticksUntilBattData, batteryLevel, isCharging, winBg, smPaths
+    global ticksUntilBattData, batteryLevel, isCharging, winBg, smPaths, gamePaths
     if ticksUntilBattData < 1:
         client.send('get batStat\n')
         ticksUntilBattData = 5
@@ -147,6 +152,13 @@ def updateClient():
                 for directory, subdirs, files in os.walk(path):
                     for filename in files:
                         shortcuts.append(os.path.join(path, directory, filename))
+        elif 'gamePaths' in items[j]:
+            gamePaths = json.loads(items[j + 1])['paths']
+            for path in gamePaths:
+                for directory, subdirs, files in os.walk(path):
+                    for filename in files:
+                        if filename.endswith('.lnk') or filename.endswith('.url'):
+                            games.append(os.path.join(path, directory, filename))
             print shortcuts
         elif 'fgScale' in items[j]:
             appSettings.screenRatio = float(re.sub('[^0-9]', '', items[j + 1]))
@@ -169,7 +181,8 @@ animations = {
     'mm_icon_exit4': animation.GUIAnimator(15),
     'mm_icon_enter5': animation.GUIAnimator(15),
     'mm_icon_exit5': animation.GUIAnimator(15),
-    'settings_expand': animation.GUIAnimator(10)
+    'settings_expand': animation.GUIAnimator(10),
+    'display_fade': animation.GUIAnimator(60)
 }
 
 selectWheelItems = []
@@ -495,10 +508,15 @@ def draw():
                 else:
                     command(selectWheelCommands[idx])
     scrollMenuClick = False
+    # animations['display_fade'].reverse = True
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
         fpsSurf = assetLoader.fontsMap['monospace'].render(fpsStr, 1, voxMath.hexToRGB(appSettings.themeColor))
         display.blit(fpsSurf, (25, 25))
+
+    # animations['display_fade'].advance()
+    # displayAlpha = int((float(animations['display_fade'].getCurrentFrame()) / 30.0) * 255)
+    # display.set_alpha(displayAlpha)
     pygame.display.flip()
     '''if initialFrame:
         pygame.display.flip()
@@ -556,13 +574,19 @@ def eventLoop():
                         selectWheelCommands = []
                         for sc in shortcuts:
                             templist = sc.split('\\')
-                            selectWheelItems.append(templist[len(templist) - 1].replace('.lnk',''))
+                            selectWheelItems.append(templist[len(templist) - 1].replace('.lnk','').replace('.lnk', ''))
                             selectWheelCommands.append(sc)
                         showSettings = False
                         animations['settings_expand'].reset()
                     elif gamesRect.collidepoint(pygame.mouse.get_pos()):
                         scrollOffset = 0
                         selectWheelContext = 3
+                        selectWheelItems = []
+                        selectWheelCommands = []
+                        for sc in games:
+                            templist = sc.split('\\')
+                            selectWheelItems.append(templist[len(templist) - 1].replace('.lnk','').replace('.url', ''))
+                            selectWheelCommands.append(sc)
                         showSettings = False
                         animations['settings_expand'].reset()
                 if ccRect.collidepoint(pygame.mouse.get_pos()) and event.button == 1:

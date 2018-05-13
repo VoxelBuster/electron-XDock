@@ -32,6 +32,10 @@ public class ProtonSocket {
             Debug.log("Connected to client");
             outBuffer.add("winBg;" + SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper") + "\n");
             outBuffer.add("smPaths;" + genPathData(EnumPathData.PROGRAMS) + "\n");
+            outBuffer.add("gamePaths;" + genPathData(EnumPathData.GAMES) + "\n");
+            if (!AppSettings.debug) {
+                outBuffer.add("noDebug\n");
+            }
             Thread inThread = new Thread(() -> {
                 while (!ProtonSocket.this.isDead()) {
                     try {
@@ -46,7 +50,7 @@ public class ProtonSocket {
                             } else if (msg.equals("quit")) {
                                 Debug.log("Client requested service shutdown...");
                                 socket.close();
-                            } else if (msg.contains("edit_fgScale_pref")) {
+                            } /*else if (msg.contains("edit_fgScale_pref")) {
                                 new Thread(() -> {
                                     String prefEdit = JOptionPane.showInputDialog(null, "Foreground Scale Factor", "Edit Preference", JOptionPane.QUESTION_MESSAGE);
                                     try {
@@ -56,7 +60,7 @@ public class ProtonSocket {
                                         e.printStackTrace();
                                     }
                                 }).start();
-                            }
+                            }*/ // No longer used. Scale presets are used instead.
                         }
                     } catch (Exception e) {
                         Debug.error("Exception in service input thread:");
@@ -116,6 +120,11 @@ public class ProtonSocket {
                 root.put("paths", pathArr);
                 break;
             case GAMES:
+                JSONArray gamesArr = new JSONArray();
+                for (String s : SystemAPI.gamesPaths) {
+                    gamesArr.add(s);
+                }
+                root.put("paths", gamesArr);
                 break;
             case MUSIC:
                 break;

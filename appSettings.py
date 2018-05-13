@@ -18,3 +18,6 @@ themeColor = '#00fbfe'
 themeAccentColor = '#424265'
 bgImage = 'assets/ui/default-bg.jpg'
 hwAccel = True
+
+# Other Settings
+visualizerChannel = -1 # -1 is default
