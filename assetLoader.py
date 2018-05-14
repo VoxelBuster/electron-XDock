@@ -87,21 +87,25 @@ def writeOutSettings():
 
 
 def readSettings():
-    if os.path.exists(appSettings.dataDir + 'appSettings.json'):
-        obj = json.load(open(appSettings.dataDir + 'appSettings.json', 'r'))
-        appSettings.dataDir = obj['dataDir']
-        appSettings.debug = obj['debug']
-        appSettings.time12Hr = obj['time12Hr']
-        appSettings.screenRatio = obj['screenRatio']
-        appSettings.fpsMax = obj['fpsMax']
-        appSettings.doubleBuffer = obj['doubleBuffer']
-        appSettings.textGlow = obj['textGlow']
-        appSettings.fpsCounter = obj['fpsCounter']
-        appSettings.useBgImage = obj['useBgImage']
-        appSettings.useWinBg = obj['useWinBg']
-        appSettings.bgColor = obj['bgColor']
-        appSettings.themeColor = obj['themeColor']
-        appSettings.themeAccentColor = obj['themeAccentColor']
-        appSettings.bgImage = obj['bgImage']
-        appSettings.hwAccel = obj['hwAccel']
-        appSettings.visualizerChannel = obj['visualizerChannel']
+    try:
+        if os.path.exists(appSettings.dataDir + 'appSettings.json'):
+            obj = json.load(open(appSettings.dataDir + 'appSettings.json', 'r'))
+            appSettings.dataDir = obj['dataDir']
+            appSettings.debug = obj['debug']
+            appSettings.time12Hr = obj['time12Hr']
+            appSettings.screenRatio = obj['screenRatio']
+            appSettings.fpsMax = obj['fpsMax']
+            appSettings.doubleBuffer = obj['doubleBuffer']
+            appSettings.textGlow = obj['textGlow']
+            appSettings.fpsCounter = obj['fpsCounter']
+            appSettings.useBgImage = obj['useBgImage']
+            appSettings.useWinBg = obj['useWinBg']
+            appSettings.bgColor = obj['bgColor']
+            appSettings.themeColor = obj['themeColor']
+            appSettings.themeAccentColor = obj['themeAccentColor']
+            appSettings.bgImage = obj['bgImage']
+            appSettings.hwAccel = obj['hwAccel']
+            appSettings.visualizerChannel = obj['visualizerChannel']
+    except Exception as e:
+        print e
+        os.remove(appSettings.dataDir + 'appSettings.json')

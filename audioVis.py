@@ -1,8 +1,11 @@
 # Credit to Will Yager
+# Adapted and tweaked for this program by VoxelBuster
 
 import pyaudio as pa
 import numpy as np
 import notes_noscaled_nosaturation
+
+import appSettings
 
 deviceCount = pa.PyAudio().get_device_count()
 audio_stream = None
@@ -17,13 +20,13 @@ def init(channel=-1):
                                          rate=44100,
                                          input=True,
                                          input_device_index=channel,
-                                         frames_per_buffer=1024)
+                                         frames_per_buffer=2048)
         else:
             audio_stream = pa.PyAudio().open(format=pa.paInt16,
                                              channels=2,
                                              rate=44100,
                                              input=True,
-                                             frames_per_buffer=1024)
+                                             frames_per_buffer=2048)
     except Exception as e:
         print 'Invalid input channel'
         print e
@@ -41,7 +44,7 @@ def read_audio(audio, num_samples):
 
 
 def visualizeAudio():
-    audio = read_audio(audio_stream, num_samples=512)
+    audio = read_audio(audio_stream, num_samples=appSettings.visualizerResolution)
     return notes_noscaled_nosaturation.fft(audio)
 
 if __name__ == '__main__':

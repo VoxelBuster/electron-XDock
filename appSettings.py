@@ -21,3 +21,6 @@ hwAccel = True
 
 # Other Settings
 visualizerChannel = -1 # -1 is default
+amplitudeAverageDepth = 3
+amplitudeDampen = 10
+visualizerResolution = 1024

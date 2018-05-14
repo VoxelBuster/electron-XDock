@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import re
 import socket
@@ -342,21 +343,21 @@ def draw():
     # Draw music visualizer
     genSamples = audioVis.visualizeAudio()
     for samples in genSamples:
-        visSurf = pygame.Surface((centercircle.get_width() * 1.5, centercircle.get_height() * 1.5), pygame.HWSURFACE)
-        visSurf.convert_alpha()
-        visSurf.fill((0,0,0,0)) # TODO fix
+        visSurf = pygame.Surface(display.get_size(), pygame.HWSURFACE).convert_alpha()
+        visSurf.fill((0,0,0,0))
         visCenter = voxMath.centerObject(pygame.Rect(0,0,0,0), pygame.Rect(0,0,visSurf.get_width(),visSurf.get_height()))
-        pygame.draw.circle(visSurf, (255, 255, 255), visCenter, centercircle.get_width() / 2)
+        # pygame.draw.circle(visSurf, (255, 255, 255), visCenter, centercircle.get_width() / 2)
         thetaInterval = 360.0 / len(samples)
         for i in range(len(samples)):
-            amplitude = samples[i] / 1000
-            vec = Vec2d(visSurf.get_width() / 2, 0)
-            endvec = Vec2d(visSurf.get_width() / 2 + amplitude, 0)
+            amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
+            vec = Vec2d(centercircle.get_width() / 2, 0)
+            endvec = Vec2d(centercircle.get_width() / 2 + amplitude, 0)
             vec.rotate_degrees(thetaInterval * i)
             endvec.rotate_degrees(thetaInterval * i)
-            pygame.draw.aaline(visSurf, (255, 255, 255), (vec.x + visCenter[0], vec.y + visCenter[1]), (endvec.x + visCenter[0], endvec.y + visCenter[1]))
+            linewidth = int(min((2 * round(math.pi, 4) * centercircle.get_width()) / appSettings.visualizerResolution, 10))
+            pygame.draw.line(visSurf, (255, 255, 255), (vec.x + visCenter[0], vec.y + visCenter[1]), (endvec.x + visCenter[0], endvec.y + visCenter[1]), linewidth)
 
-        display.blit(visSurf, voxMath.centerObject(pygame.Rect((0,0),visSurf.get_size()), pygame.Rect((0,0),display.get_size())))
+        blit_alpha(display, visSurf, voxMath.centerObject(pygame.Rect((0,0),visSurf.get_size()), pygame.Rect((0,0),display.get_size())), 127)
         break
 
     batteryCrop = int((float(centerBatteryFg.get_height()) / 4.0) + (float(centerBatteryFg.get_height()) / 2.0) *
@@ -544,7 +545,7 @@ def draw():
     # animations['display_fade'].advance()
     # displayAlpha = int((float(animations['display_fade'].getCurrentFrame()) / 30.0) * 255)
     # display.set_alpha(displayAlpha)
-    pygame.display.flip()
+    pygame.display.update()
     '''if initialFrame:
         pygame.display.flip()
         initialFrame = False
