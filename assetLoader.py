@@ -82,6 +82,7 @@ def writeOutSettings():
     obj['themeAccentColor'] = appSettings.themeAccentColor
     obj['bgImage'] = appSettings.bgImage
     obj['hwAccel'] = appSettings.hwAccel
+    obj['visualizerChannel'] = appSettings.visualizerChannel
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 
@@ -103,4 +104,4 @@ def readSettings():
         appSettings.themeAccentColor = obj['themeAccentColor']
         appSettings.bgImage = obj['bgImage']
         appSettings.hwAccel = obj['hwAccel']
-
+        appSettings.visualizerChannel = obj['visualizerChannel']

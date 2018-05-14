@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065fe8ab-e4ce-49be-84d3-5ddb608069ce" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/audioVis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/javaStart.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/notes_noscaled_nosaturation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/appSettings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devStart.bat" beforeDir="false" afterPath="$PROJECT_DIR$/devStart.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assetLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/assetLoader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audioVis.py" beforeDir="false" afterPath="$PROJECT_DIR$/audioVis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/electronUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/electronUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/AppSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/AppSettings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/SystemAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/SystemAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/voxMath.py" beforeDir="false" afterPath="$PROJECT_DIR$/voxMath.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,16 +24,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/electronUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+            <state relative-caret-position="406">
+              <caret line="346" column="39" selection-start-line="346" selection-start-column="39" selection-end-line="346" selection-end-column="39" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
-                <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-                <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assetLoader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1751">
+              <caret line="106" column="62" selection-start-line="106" selection-start-column="62" selection-end-line="106" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -48,20 +48,11 @@
       <file leaf-file-name="audioVis.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/audioVis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="22" selection-start-column="22" selection-end-column="22" />
+            <state relative-caret-position="134">
+              <caret line="34" column="69" selection-start-line="34" selection-start-column="69" selection-end-line="34" selection-end-column="69" />
               <folding>
-                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#24#44#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="notes_noscaled_nosaturation.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/notes_noscaled_nosaturation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="22" selection-start-column="22" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -69,8 +60,8 @@
       <file leaf-file-name="voxMath.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/voxMath.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="17">
+              <caret line="1" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -78,8 +69,8 @@
       <file leaf-file-name="appSettings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/appSettings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
+            <state relative-caret-position="340">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
             </state>
           </provider>
         </entry>
@@ -122,6 +113,7 @@
       <find>.lnk</find>
       <find>.update</find>
       <find>.flip</find>
+      <find>pygame.Surface</find>
     </findStrings>
     <replaceStrings>
       <replace>self</replace>
@@ -139,26 +131,26 @@
         <option value="$PROJECT_DIR$/GUIAnimator.py" />
         <option value="$PROJECT_DIR$/animation.py" />
         <option value="$PROJECT_DIR$/effects.py" />
-        <option value="$PROJECT_DIR$/voxMath.py" />
         <option value="$PROJECT_DIR$/sd-test.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/codeAssist.py" />
-        <option value="$PROJECT_DIR$/assetLoader.py" />
         <option value="$PROJECT_DIR$/constants.py" />
-        <option value="$PROJECT_DIR$/user/appSettings.json" />
         <option value="$PROJECT_DIR$/devStart.bat" />
         <option value="$PROJECT_DIR$/javaStart.bat" />
-        <option value="$PROJECT_DIR$/electronUI.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/appSettings.py" />
-        <option value="$PROJECT_DIR$/audioVis.py" />
         <option value="$PROJECT_DIR$/notes_noscaled_nosaturation.py" />
+        <option value="$PROJECT_DIR$/assetLoader.py" />
+        <option value="$PROJECT_DIR$/user/appSettings.json" />
+        <option value="$PROJECT_DIR$/voxMath.py" />
+        <option value="$PROJECT_DIR$/audioVis.py" />
+        <option value="$PROJECT_DIR$/electronUI.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="15" />
-    <option name="y" value="-13" />
+    <option name="y" value="-14" />
     <option name="width" value="1940" />
     <option name="height" value="1050" />
   </component>
@@ -209,20 +201,7 @@
             <path>
               <item name="electron-XDock" type="b2602c69:ProjectViewProjectNode" />
               <item name="electron-XDock" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="electron-XDock" type="b2602c69:ProjectViewProjectNode" />
-              <item name="electron-XDock" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-              <item name="deploy" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="electron-XDock" type="b2602c69:ProjectViewProjectNode" />
-              <item name="electron-XDock" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-              <item name="deploy" type="462c0819:PsiDirectoryNode" />
-              <item name="runtime" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="electron-XDock" type="b2602c69:ProjectViewProjectNode" />
@@ -263,7 +242,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.audioVis">
+  <component name="RunManager" selected="Python.electronUI">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -479,8 +458,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.audioVis" />
         <item itemvalue="Python.electronUI" />
+        <item itemvalue="Python.audioVis" />
         <item itemvalue="Python.test" />
         <item itemvalue="Python.sd-test" />
       </list>
@@ -508,19 +487,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18071654" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18043622" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32960895" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32998884" />
       <window_info anchor="bottom" id="Python Console" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32905984" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32960895" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32905984" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3988604" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -554,20 +532,11 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/appSettings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/electronUI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -598,8 +567,6 @@
         <state>
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -630,8 +597,6 @@
         <state>
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -662,8 +627,6 @@
         <state>
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -695,8 +658,6 @@
           <caret line="179" selection-start-line="179" selection-end-line="179" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -728,8 +689,6 @@
           <caret line="47" selection-start-line="47" selection-end-line="47" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -760,8 +719,6 @@
         <state>
           <folding>
             <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
           </folding>
         </state>
       </provider>
@@ -808,43 +765,9 @@
     <entry file="file://$PROJECT_DIR$/vgrade.py" />
     <entry file="file://$PROJECT_DIR$/gradients.py" />
     <entry file="file://$PROJECT_DIR$/test.py" />
-    <entry file="file://$PROJECT_DIR$/codeAssist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sd-test.py" />
     <entry file="file://$PROJECT_DIR$/constants.py" />
-    <entry file="file://$PROJECT_DIR$/user/appSettings.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="334" selection-start-column="334" selection-end-column="334" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voxMath.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assetLoader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1817">
-          <caret line="93" column="17" lean-forward="true" selection-start-line="93" selection-start-column="17" selection-end-line="93" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/javaStart.bat">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/javaStart.bat" />
     <entry file="file://$PROJECT_DIR$/devStart.bat">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -859,39 +782,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/notes_noscaled_nosaturation.py" />
     <entry file="file://$PROJECT_DIR$/appSettings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
+        <state relative-caret-position="340">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/electronUI.py">
+    <entry file="file://$PROJECT_DIR$/user/appSettings.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <marker date="1526251646182" expanded="true" signature="32849:32868" ph="..." />
-            <marker date="1526251646182" expanded="true" signature="32849:32923" ph="..." />
-          </folding>
+        <state>
+          <caret column="107" selection-start-column="107" selection-end-column="107" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/codeAssist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/pyaudio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="607" selection-start-line="607" selection-end-line="607" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/audioVis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="22" selection-start-column="22" selection-end-column="22" />
+        <state relative-caret-position="134">
+          <caret line="34" column="69" selection-start-line="34" selection-start-column="69" selection-end-line="34" selection-end-column="69" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#24#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/notes_noscaled_nosaturation.py">
+    <entry file="file://$PROJECT_DIR$/voxMath.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="22" selection-start-column="22" selection-end-column="22" />
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assetLoader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1751">
+          <caret line="106" column="62" selection-start-line="106" selection-start-column="62" selection-end-line="106" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/electronUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="346" column="39" selection-start-line="346" selection-start-column="39" selection-end-line="346" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -21,6 +21,7 @@ winx, winy = 0, 0
 os.environ['SDL_VIDEO_WINDOW_POS'] = "{},{}".format(winx, winy)
 
 pygame.init()
+audioVis.init(appSettings.visualizerChannel)
 
 print 'Reading app settings file'
 assetLoader.readSettings()
@@ -296,6 +297,11 @@ fgScaleLabel = assetLoader.fontsMap['monospace'].render('FG Scale: ' + str(appSe
 fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
                                             (int(appSettings.screenRatio * fgScaleLabel.get_width()),
                                              int(appSettings.screenRatio * fgScaleLabel.get_height())))
+channelLabel = assetLoader.fontsMap['monospace'].render('Visualizer Channel: ' + str(appSettings.visualizerChannel), 1,
+                                                        voxMath.hexToRGB(appSettings.themeColor))
+channelLabel = pygame.transform.smoothscale(channelLabel,
+                                            (int(appSettings.screenRatio * channelLabel.get_width()),
+                                             int(appSettings.screenRatio * channelLabel.get_height())))
 restartLabel = assetLoader.fontsMap['monospace'].render('Restart to apply', 1, voxMath.hexToRGB('#ff0000'))
 restartLabel = pygame.transform.smoothscale(restartLabel,
                                             (int(appSettings.screenRatio * restartLabel.get_width()),
@@ -332,6 +338,26 @@ def draw():
                                                                           display.get_height()))
 
     display.blit(centercircle, centerpt)
+
+    # Draw music visualizer
+    genSamples = audioVis.visualizeAudio()
+    for samples in genSamples:
+        visSurf = pygame.Surface((centercircle.get_width() * 1.5, centercircle.get_height() * 1.5), pygame.HWSURFACE)
+        visSurf.convert_alpha()
+        visSurf.fill((0,0,0,0)) # TODO fix
+        visCenter = voxMath.centerObject(pygame.Rect(0,0,0,0), pygame.Rect(0,0,visSurf.get_width(),visSurf.get_height()))
+        pygame.draw.circle(visSurf, (255, 255, 255), visCenter, centercircle.get_width() / 2)
+        thetaInterval = 360.0 / len(samples)
+        for i in range(len(samples)):
+            amplitude = samples[i] / 1000
+            vec = Vec2d(visSurf.get_width() / 2, 0)
+            endvec = Vec2d(visSurf.get_width() / 2 + amplitude, 0)
+            vec.rotate_degrees(thetaInterval * i)
+            endvec.rotate_degrees(thetaInterval * i)
+            pygame.draw.aaline(visSurf, (255, 255, 255), (vec.x + visCenter[0], vec.y + visCenter[1]), (endvec.x + visCenter[0], endvec.y + visCenter[1]))
+
+        display.blit(visSurf, voxMath.centerObject(pygame.Rect((0,0),visSurf.get_size()), pygame.Rect((0,0),display.get_size())))
+        break
 
     batteryCrop = int((float(centerBatteryFg.get_height()) / 4.0) + (float(centerBatteryFg.get_height()) / 2.0) *
                       (1.0 - batteryLevel))
@@ -462,6 +488,7 @@ def draw():
         s.blit(hwAccelLabel, (25, 355))
         s.blit(fgScaleLabel, (25, 410))
         s.blit(showFPSLabel, (25, 465))
+        s.blit(channelLabel, (25, 520))
         if appSettings.hwAccel:
             s.blit(cb_checked,
                    (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
@@ -532,7 +559,7 @@ def render():
 running = True
 
 def eventLoop():
-    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, needRestart, selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, channelLabel, needRestart, selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -631,6 +658,13 @@ def eventLoop():
                     if rowRect.collidepoint(pygame.mouse.get_pos()):
                         appSettings.fpsCounter = not appSettings.fpsCounter
                         assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 520, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.visualizerChannel += 1
+                        if appSettings.visualizerChannel >= audioVis.deviceCount:
+                            appSettings.visualizerChannel = 0
+                        audioVis.init(appSettings.visualizerChannel)
+                        assetLoader.writeOutSettings()
         updateClient()
         if appSettings.time12Hr:
             hour = datetime.now().hour % 12
@@ -646,6 +680,12 @@ def eventLoop():
         fgScaleLabel = pygame.transform.smoothscale(fgScaleLabel,
                                                     (int(appSettings.screenRatio * fgScaleLabel.get_width()),
                                                      int(appSettings.screenRatio * fgScaleLabel.get_height())))
+        channelLabel = assetLoader.fontsMap['monospace'].render(
+            'Visualizer Channel: ' + str(appSettings.visualizerChannel), 1,
+            voxMath.hexToRGB(appSettings.themeColor))
+        channelLabel = pygame.transform.smoothscale(channelLabel,
+                                                    (int(appSettings.screenRatio * channelLabel.get_width()),
+                                                     int(appSettings.screenRatio * channelLabel.get_height())))
         if not expandMainMenu:
             animations['mm_expand'].reset()
         for i in range(0, 5):
