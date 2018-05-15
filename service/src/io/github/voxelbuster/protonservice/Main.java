@@ -12,11 +12,11 @@ public class Main {
         ProtonSocket ps = new ProtonSocket();
 
         if (!AppSettings.debug) {
-           Runtime.getRuntime().exec("python ..\\electronUI.py");
+           Runtime.getRuntime().exec("start runtime\\Python27\\python.exe electronUI.pyc");
         }
 
         while (!ps.isDead()) {
-            Thread.sleep(1000);
+            Thread.sleep(1000); // Keeps Java from eating the CPU for no reason.
         }
     }
 }

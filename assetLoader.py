@@ -82,7 +82,12 @@ def writeOutSettings():
     obj['themeAccentColor'] = appSettings.themeAccentColor
     obj['bgImage'] = appSettings.bgImage
     obj['hwAccel'] = appSettings.hwAccel
+    obj['visualizer'] = appSettings.visualizer
     obj['visualizerChannel'] = appSettings.visualizerChannel
+    obj['amplitudeAverageDepth'] = appSettings.amplitudeAverageDepth
+    obj['amplitudeDampen'] = appSettings.amplitudeDampen
+    obj['visualizerResolution'] = appSettings.visualizerResolution
+    obj['visualizerAlpha'] = appSettings.visualizerAlpha
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 
@@ -106,6 +111,11 @@ def readSettings():
             appSettings.bgImage = obj['bgImage']
             appSettings.hwAccel = obj['hwAccel']
             appSettings.visualizerChannel = obj['visualizerChannel']
+            appSettings.visualizer = obj['visualizer']
+            appSettings.amplitudeAverageDepth = obj['amplitudeAverageDepth']
+            appSettings.amplitudeDampen = obj['amplitudeDampen']
+            appSettings.visualizerResolution = obj['visualizerResolution']
+            appSettings.visualizerAlpha = obj['visualizerAlpha']
     except Exception as e:
         print e
         os.remove(appSettings.dataDir + 'appSettings.json')
