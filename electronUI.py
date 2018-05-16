@@ -330,7 +330,6 @@ scrollMenuClick = False
 
 searchStr = ''
 
-
 # REALLY BAD CODING PAST THIS POINT
 def draw():
     global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick
@@ -348,23 +347,64 @@ def draw():
 
     # Draw music visualizer
     if appSettings.visualizer:
-        genSamples = audioVis.visualizeAudio()
-        for samples in genSamples:
-            visSurf = pygame.Surface((display.get_height(), display.get_height()), pygame.HWSURFACE).convert_alpha()
-            visSurf.fill((0,0,0,0))
-            visCenter = voxMath.centerObject(pygame.Rect(0,0,0,0), pygame.Rect(0,0,visSurf.get_width(),visSurf.get_height()))
-            thetaInterval = 360.0 / len(samples)
-            for i in range(len(samples)):
-                amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
-                vec = Vec2d(centercircle.get_width() / 2, 0)
-                endvec = Vec2d(centercircle.get_width() / 2 + amplitude, 0)
-                vec.rotate_degrees(thetaInterval * i)
-                endvec.rotate_degrees(thetaInterval * i)
-                linewidth = int(min((2 * round(math.pi, 4) * centercircle.get_width()) / appSettings.visualizerResolution, 10))
-                pygame.draw.line(visSurf, (255, 255, 255), (vec.x + visCenter[0], vec.y + visCenter[1]), (endvec.x + visCenter[0], endvec.y + visCenter[1]), linewidth)
+        if appSettings.visualizerPlacement == 0:
+            genSamples = audioVis.visualizeAudio()
+            for samples in genSamples:
+                visSurf = pygame.Surface((display.get_height(), display.get_height()), pygame.HWSURFACE).convert_alpha()
+                visSurf.fill((0,0,0,0))
+                visCenter = voxMath.centerObject(pygame.Rect(0,0,0,0), pygame.Rect(0,0,visSurf.get_width(),visSurf.get_height()))
+                thetaInterval = 360.0 / len(samples)
+                for i in range(len(samples)):
+                    amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
+                    if i < len(samples) - 2 and math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i + 1, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen >= amplitude * 3:
+                        amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i + 1, appSettings.amplitudeAverageDepth))) / (appSettings.amplitudeDampen * 2)
+                    elif i > 0 and math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i - 1, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen >= amplitude * 3:
+                        amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i - 1, appSettings.amplitudeAverageDepth))) / (appSettings.amplitudeDampen * 2)
+                    if math.floor(amplitude) < 3:
+                        continue # If its just a nub, dont bother
+                    vec = Vec2d(centercircle.get_width() / 2, 0)
+                    endvec = Vec2d(centercircle.get_width() / 2 + amplitude, 0)
+                    vec.rotate_degrees(thetaInterval * i)
+                    endvec.rotate_degrees(thetaInterval * i)
+                    linewidth = int(min((2 * round(math.pi, 4) * centercircle.get_width()) / float(min(len(samples), appSettings.visualizerResolution)), 10))
+                    pygame.draw.line(visSurf, voxMath.hexToRGB(appSettings.visualizerColor), (vec.x + visCenter[0], vec.y + visCenter[1]), (endvec.x + visCenter[0], endvec.y + visCenter[1]), linewidth)
 
-            blit_alpha(display, visSurf, voxMath.centerObject(pygame.Rect((0,0),visSurf.get_size()), pygame.Rect((0,0),display.get_size())), appSettings.visualizerAlpha)
-            break
+                blit_alpha(display, visSurf, voxMath.centerObject(pygame.Rect((0,0),visSurf.get_size()), pygame.Rect((0,0),display.get_size())), appSettings.visualizerAlpha)
+                break
+        elif appSettings.visualizerPlacement == 1:
+            genSamples = audioVis.visualizeAudio()
+            for samples in genSamples:
+                visSurf = pygame.Surface((display.get_width(), display.get_height() / 3), pygame.HWSURFACE).convert_alpha()
+                visSurf.fill((0, 0, 0, 0))
+                visPos = (0, display.get_height() - visSurf.get_height())
+                for i in range(len(samples)):
+                    amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i,
+                                                                                appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
+                    endvec = Vec2d(0, amplitude)
+                    linewidth = int(math.ceil(float(visSurf.get_width()) / float(min(len(samples), appSettings.visualizerResolution)))) + 1
+                    pygame.draw.line(visSurf, voxMath.hexToRGB(appSettings.visualizerColor), (i * linewidth, visSurf.get_height()),
+                                     (i* linewidth, visSurf.get_height() - endvec.y), linewidth - 1)
+
+                blit_alpha(display, visSurf, visPos, appSettings.visualizerAlpha)
+                break
+        elif appSettings.visualizerPlacement == 2:
+            genSamples = audioVis.visualizeAudio()
+            for samples in genSamples:
+                visSurf = pygame.Surface((display.get_width(), display.get_height() / 3),
+                                         pygame.HWSURFACE).convert_alpha()
+                visSurf.fill((0, 0, 0, 0))
+                visPos = (0, 0)
+                for i in range(len(samples)):
+                    amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i,
+                                                                                appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
+                    endvec = Vec2d(0, amplitude)
+                    linewidth = int(math.ceil(
+                        float(visSurf.get_width()) / float(min(len(samples), appSettings.visualizerResolution)))) + 1
+                    pygame.draw.line(visSurf, voxMath.hexToRGB(appSettings.visualizerColor), (i * linewidth, 0),
+                                     (i * linewidth, endvec.y), linewidth - 1)
+
+                blit_alpha(display, visSurf, visPos, appSettings.visualizerAlpha)
+                break
 
     batteryCrop = int((float(centerBatteryFg.get_height()) / 4.0) + (float(centerBatteryFg.get_height()) / 2.0) *
                       (1.0 - batteryLevel))
@@ -591,12 +631,29 @@ def eventLoop():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
-                if selectWheelContext == 2 or selectWheelContext == 3:
+                if selectWheelContext == 2 or selectWheelContext == 3: # WOO search function!
                     if event.key == pygame.K_BACKSPACE:
                         searchStr = searchStr[:-1]
                     else:
                         searchStr += str(event.unicode)
-                    print searchStr
+                    if selectWheelContext == 2:
+                        selectWheelCommands = []
+                        selectWheelItems = []
+                        for sc in shortcuts:
+                            templist = sc.split('\\')
+                            selectWheelItems.append(
+                                templist[len(templist) - 1].replace('.lnk', '').replace('.url', ''))
+                            selectWheelCommands.append(sc)
+                    elif selectWheelContext == 3:
+                        selectWheelCommands = []
+                        selectWheelItems = []
+                        for sc in games:
+                            templist = sc.split('\\')
+                            selectWheelItems.append(
+                                templist[len(templist) - 1].replace('.lnk', '').replace('.url', ''))
+                            selectWheelCommands.append(sc)
+                    selectWheelItems = filter(lambda k: searchStr in k.lower(), selectWheelItems)
+                    selectWheelCommands = filter(lambda k: searchStr in k.lower(), selectWheelCommands)
             # elif event.type == pygame.
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if selectWheelContext > 0:
@@ -607,6 +664,10 @@ def eventLoop():
                     elif event.button == 1: # oh god this is where it gets dicey
                         if pygame.mouse.get_pos()[0] > float(display.get_width()) * 0.8:
                             scrollMenuClick = True
+                        if selectWheelContext > 0:
+                            selectWheelContext = 0
+                            selectWheelCommands = []
+                            selectWheelItems = []
                 if expandMainMenu and event.button == 1:
                     if exitRect.collidepoint(pygame.mouse.get_pos()):
                         pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4

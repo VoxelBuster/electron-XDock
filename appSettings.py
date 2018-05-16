@@ -22,7 +22,9 @@ hwAccel = True
 # Visualizer Settings
 visualizer = True
 visualizerChannel = -1 # -1 is default
+visualizerPlacement = 0 # 0 = radial, 1 = bottom, 2 = top
 amplitudeAverageDepth = 3
 amplitudeDampen = 10
-visualizerResolution = 1024
+visualizerResolution = 512
+visualizerColor = '#00aaaa'
 visualizerAlpha = 127
