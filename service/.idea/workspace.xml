@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="560f42e9-802c-4bb6-9bf8-87246f25a1d4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../appSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../appSettings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../electronUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/../electronUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/DFT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/FFT.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/FourierTransform.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/Signals.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/SpectrumProvider.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/analysis/ThresholdFunction.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/io/AudioDevice.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/io/Decoder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/io/EndianDataInputStream.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/io/MP3Decoder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/io/WaveDecoder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/visualization/PlaybackVisualizer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/badlogic/audio/visualization/Plot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/util/AppSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/util/AppSettings.java" afterDir="false" />
-    </list>
+    <list default="true" id="560f42e9-802c-4bb6-9bf8-87246f25a1d4" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +14,7 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
+            <state relative-caret-position="119">
               <caret line="9" selection-start-line="9" selection-end-line="9" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -68,7 +47,7 @@
       <file leaf-file-name="ProtonSocket.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-129">
+            <state relative-caret-position="17">
               <caret line="104" selection-start-line="104" selection-end-line="104" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -93,7 +72,7 @@
         <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/util/AppSettings.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="4" column="39" lean-forward="true" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+              <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -217,8 +196,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -309,7 +288,7 @@
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4993573" weight="0.32447553" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49689442" visible="true" weight="0.22557841" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49689442" visible="true" weight="0.2281491" />
       <window_info id="Structure" order="1" sideWeight="0.5031056" side_tool="true" weight="0.22557841" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
@@ -342,13 +321,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -393,13 +366,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -444,13 +411,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -495,13 +456,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -546,13 +501,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -597,13 +546,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -648,13 +591,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2788">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
@@ -726,17 +663,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="164" selection-start-line="164" selection-end-line="164" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/audio/AudioAPI.java" />
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/util/AppSettings.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="39" lean-forward="true" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
+          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -749,7 +680,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="119">
           <caret line="9" selection-start-line="9" selection-end-line="9" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -759,7 +690,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-129">
+        <state relative-caret-position="17">
           <caret line="104" selection-start-line="104" selection-end-line="104" />
           <folding>
             <element signature="imports" expanded="true" />

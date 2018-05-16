@@ -88,6 +88,8 @@ def writeOutSettings():
     obj['amplitudeDampen'] = appSettings.amplitudeDampen
     obj['visualizerResolution'] = appSettings.visualizerResolution
     obj['visualizerAlpha'] = appSettings.visualizerAlpha
+    obj['visualizerPlacement'] = appSettings.visualizerPlacement
+    obj['visualizerColor'] = appSettings.visualizerColor
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 
@@ -116,6 +118,8 @@ def readSettings():
             appSettings.amplitudeDampen = obj['amplitudeDampen']
             appSettings.visualizerResolution = obj['visualizerResolution']
             appSettings.visualizerAlpha = obj['visualizerAlpha']
+            appSettings.visualizerPlacement = obj['visualizerPlacement']
+            appSettings.visualizerColor = obj['visualizerColor']
     except Exception as e:
         print e
         os.remove(appSettings.dataDir + 'appSettings.json')
