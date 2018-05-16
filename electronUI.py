@@ -328,6 +328,8 @@ totalScroll = 0
 scrollOffset = 0
 scrollMenuClick = False
 
+searchStr = ''
+
 
 # REALLY BAD CODING PAST THIS POINT
 def draw():
@@ -548,6 +550,11 @@ def draw():
                 else:
                     command(selectWheelCommands[idx])
     scrollMenuClick = False
+
+    if selectWheelContext == 2 or selectWheelContext == 3:
+        searchLabel = assetLoader.fontsMap['monospace'].render(searchStr, 1, voxMath.hexToRGB(appSettings.themeColor))
+        centerTemp = voxMath.centerObject(pygame.Rect(0,0,searchLabel.get_width(),0), pygame.Rect(0,0,display.get_width(),0))
+        display.blit(searchLabel, (centerTemp[0], 30))
     # animations['display_fade'].reverse = True
     if appSettings.fpsCounter:
         fpsStr = 'FPS: ' + str(int(chron.get_fps()))
@@ -572,7 +579,8 @@ def render():
 running = True
 
 def eventLoop():
-    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, channelLabel, needRestart, selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset
+    global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, channelLabel, needRestart, \
+        selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset, searchStr
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -583,6 +591,12 @@ def eventLoop():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
+                if selectWheelContext == 2 or selectWheelContext == 3:
+                    if event.key == pygame.K_BACKSPACE:
+                        searchStr = searchStr[:-1]
+                    else:
+                        searchStr += str(event.unicode)
+                    print searchStr
             # elif event.type == pygame.
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if selectWheelContext > 0:

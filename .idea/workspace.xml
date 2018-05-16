@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="065fe8ab-e4ce-49be-84d3-5ddb608069ce" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appSettings.py" beforeDir="false" afterPath="$PROJECT_DIR$/appSettings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assetLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/assetLoader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/electronUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/electronUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/javaStart.bat" beforeDir="false" afterPath="$PROJECT_DIR$/javaStart.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/AppSettings.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/AppSettings.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,20 +21,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/electronUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+            <state relative-caret-position="209">
+              <caret line="558" column="30" lean-forward="true" selection-start-line="558" selection-start-column="30" selection-end-line="558" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assetLoader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="745">
-              <caret line="121" selection-start-line="121" selection-end-line="121" />
+            <state relative-caret-position="238">
+              <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -47,8 +45,8 @@
       <file leaf-file-name="voxMath.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/voxMath.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
+            <state relative-caret-position="357">
+              <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -56,8 +54,8 @@
       <file leaf-file-name="appSettings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/appSettings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+            <state relative-caret-position="391">
+              <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -105,6 +103,7 @@
       <find>E:\GitHub\electron-XDock</find>
       <find>lib\</find>
       <find>\</find>
+      <find>if appsettings.fps</find>
     </findStrings>
     <replaceStrings>
       <replace>self</replace>
@@ -136,16 +135,16 @@
         <option value="$PROJECT_DIR$/audioVis.py" />
         <option value="$PROJECT_DIR$/voxMath.py" />
         <option value="$PROJECT_DIR$/appSettings.py" />
-        <option value="$PROJECT_DIR$/assetLoader.py" />
-        <option value="$PROJECT_DIR$/electronUI.py" />
         <option value="$PROJECT_DIR$/javaStart.bat" />
         <option value="$PROJECT_DIR$/launcher.c" />
+        <option value="$PROJECT_DIR$/assetLoader.py" />
+        <option value="$PROJECT_DIR$/electronUI.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="15" />
-    <option name="y" value="-14" />
+    <option name="y" value="-15" />
     <option name="width" value="1940" />
     <option name="height" value="1050" />
   </component>
@@ -185,7 +184,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -201,6 +199,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -477,14 +476,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18018967" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17977528" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32998884" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32960895" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32849163" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32763532" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32849163" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -786,22 +785,8 @@
     <entry file="file://$PROJECT_DIR$/launcher.c" />
     <entry file="file://$PROJECT_DIR$/appSettings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="17" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voxMath.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="731">
-          <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/electronUI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+        <state relative-caret-position="391">
+          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -814,8 +799,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/assetLoader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="745">
-          <caret line="121" selection-start-line="121" selection-end-line="121" />
+        <state relative-caret-position="238">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voxMath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/electronUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="558" column="30" lean-forward="true" selection-start-line="558" selection-start-column="30" selection-end-line="558" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
