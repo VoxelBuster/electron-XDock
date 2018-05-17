@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065fe8ab-e4ce-49be-84d3-5ddb608069ce" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assetLoader.py" beforeDir="false" afterPath="$PROJECT_DIR$/assetLoader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/electronUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/electronUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/service/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/lib/jl1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/lib/jlayer-1.0.1.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/lib/mp3spi1.9.4.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/lib/tritonus_aos.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/lib/tritonus_share.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/net/ProtonSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/SystemAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/io/github/voxelbuster/protonservice/util/SystemAPI.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,8 +32,8 @@
       <file leaf-file-name="electronUI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/electronUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="653" column="58" selection-start-line="653" selection-start-column="58" selection-end-line="653" selection-end-column="58" />
+            <state relative-caret-position="238">
+              <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -33,11 +41,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="setup.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="assetLoader.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assetLoader.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="677">
-              <caret line="121" column="62" selection-start-line="121" selection-start-column="62" selection-end-line="121" selection-end-column="62" />
+            <state>
+              <caret line="37" selection-start-line="37" selection-end-line="37" />
             </state>
           </provider>
         </entry>
@@ -54,8 +74,8 @@
       <file leaf-file-name="appSettings.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/appSettings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+            <state relative-caret-position="425">
+              <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -146,9 +166,10 @@
         <option value="$PROJECT_DIR$/voxMath.py" />
         <option value="$PROJECT_DIR$/javaStart.bat" />
         <option value="$PROJECT_DIR$/launcher.c" />
-        <option value="$PROJECT_DIR$/electronUI.py" />
         <option value="$PROJECT_DIR$/appSettings.py" />
         <option value="$PROJECT_DIR$/assetLoader.py" />
+        <option value="$PROJECT_DIR$/electronUI.py" />
+        <option value="$PROJECT_DIR$/setup.py" />
       </list>
     </option>
   </component>
@@ -399,16 +420,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17966281" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17911434" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32998884" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32960895" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3273743" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32621083" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32849163" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32763532" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3988604" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -444,13 +465,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/electronUI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="16" lean-forward="true" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/voxMath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="731">
@@ -720,27 +734,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/appSettings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assetLoader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="37" selection-start-line="37" selection-end-line="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/electronUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="653" column="58" selection-start-line="653" selection-start-column="58" selection-end-line="653" selection-end-column="58" />
+        <state relative-caret-position="238">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/appSettings.py">
+    <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assetLoader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="677">
-          <caret line="121" column="62" selection-start-line="121" selection-start-column="62" selection-end-line="121" selection-end-column="62" />
+        <state relative-caret-position="306">
+          <caret line="18" column="30" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

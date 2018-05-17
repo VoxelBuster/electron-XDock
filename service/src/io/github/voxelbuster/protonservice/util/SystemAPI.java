@@ -1,6 +1,7 @@
 package io.github.voxelbuster.protonservice.util;
 
-import com.sun.deploy.util.WinRegistry;
+import com.sun.jna.platform.win32.Advapi32Util;
+import com.sun.jna.platform.win32.WinReg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,32 +55,32 @@ public class SystemAPI {
     }
 
     public static String readRegistry(String path, String key) {
-        int root;
+        WinReg.HKEY root;
         if (path.toUpperCase().startsWith("HKEY_CURRENT_USER")) {
-            root = WinRegistry.HKEY_CURRENT_USER;
+            root = WinReg.HKEY_CURRENT_USER;
             path = path.replace("HKEY_CURRENT_USER\\","");
         } else if (path.toUpperCase().startsWith("HKEY_CLASSES_ROOT")) {
-            root = WinRegistry.HKEY_CLASSES_ROOT;
+            root = WinReg.HKEY_CLASSES_ROOT;
             path = path.replace("HKEY_CLASSES_ROOT\\","");
         } else if (path.toUpperCase().startsWith("HKEY_CURRENT_CONFIG")) {
-            root = WinRegistry.HKEY_CURRENT_CONFIG;
+            root = WinReg.HKEY_CURRENT_CONFIG;
             path = path.replace("HKEY_CURRENT_CONFIG\\","");
         } else if (path.toUpperCase().startsWith("HKEY_DYN_DATA")) {
-            root = WinRegistry.HKEY_DYN_DATA;
+            root = WinReg.HKEY_DYN_DATA;
             path = path.replace("HKEY_DYN_DATA\\","");
         } else if (path.toUpperCase().startsWith("HKEY_LOCAL_MACHINE")) {
-            root = WinRegistry.HKEY_LOCAL_MACHINE;
+            root = WinReg.HKEY_LOCAL_MACHINE;
             path = path.replace("HKEY_LOCAL_MACHINE\\","");
         } else if (path.toUpperCase().startsWith("HKEY_PERFORMANCE_DATA")) {
-            root = WinRegistry.HKEY_PERFORMANCE_DATA;
+            root = WinReg.HKEY_PERFORMANCE_DATA;
             path = path.replace("HKEY_PERFORMANCE_DATA\\","");
         } else if (path.toUpperCase().startsWith("HKEY_USERS")) {
-            root = WinRegistry.HKEY_USERS;
+            root = WinReg.HKEY_USERS;
             path = path.replace("HKEY_USERS\\","");
         } else {
-            root = WinRegistry.HKEY_LOCAL_MACHINE;
+            root = WinReg.HKEY_LOCAL_MACHINE;
             path = path.substring(path.indexOf("\\") + 1);
         }
-        return WinRegistry.getString(root, path, key);
+        return Advapi32Util.registryGetStringValue(root, path, key);
     }
 }

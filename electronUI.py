@@ -17,6 +17,9 @@ import gradients
 import voxMath
 import audioVis
 
+print 'Starting protonService'
+os.system('.\\service\\protonService')
+
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
 os.environ['SDL_VIDEO_WINDOW_POS'] = "{},{}".format(winx, winy)
@@ -145,7 +148,8 @@ def updateClient():
             continue
         elif 'winBg' in items[j]:
             # print items[j+1]
-            winBg = pygame.transform.smoothscale(pygame.image.load(items[j + 1]).convert(), (display.get_width(),
+            print items[j+1]
+            winBg = pygame.transform.smoothscale(assetLoader.loadExtImg(items[j+1]).convert(), (display.get_width(),
                                                                                              display.get_height()))
             continue
         elif 'smPaths' in items[j]:
@@ -335,7 +339,7 @@ def draw():
     global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick
     # dirtyRegions = []
     if appSettings.useBgImage:
-        if appSettings.useWinBg:
+        if appSettings.useWinBg and winBg is not None:
             display.blit(winBg, (0, 0))
         else:
             display.blit(bgImage, (0, 0))

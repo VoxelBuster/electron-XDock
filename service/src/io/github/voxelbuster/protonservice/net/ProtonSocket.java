@@ -6,8 +6,10 @@ import io.github.voxelbuster.protonservice.util.SystemAPI;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.swing.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class ProtonSocket {
 
         if (socket.isConnected()) {
             Debug.log("Connected to client");
+            System.out.println(SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper"));
             outBuffer.add("winBg;" + SystemAPI.readRegistry("HKEY_CURRENT_USER\\Control Panel\\Desktop", "WallPaper") + "\n");
             outBuffer.add("smPaths;" + genPathData(EnumPathData.PROGRAMS) + "\n");
             outBuffer.add("gamePaths;" + genPathData(EnumPathData.GAMES) + "\n");
