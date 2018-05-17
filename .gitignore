@@ -1,7 +1,5 @@
-service/\.idea/workspace\.xml
 service/out/
 target/
 *.pyc
 electron_archive.zip
-\.idea/workspace\.xml
 user/
