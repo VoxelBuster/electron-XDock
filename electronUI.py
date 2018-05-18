@@ -14,6 +14,7 @@ import appSettings
 import assetLoader
 import constants
 import gradients
+import joyMap
 import voxMath
 import audioVis
 
@@ -31,6 +32,9 @@ print 'Reading app settings file'
 assetLoader.readSettings()
 
 display = None
+
+controller = pygame.joystick.Joystick(0)
+controller.init()
 
 info = pygame.display.Info()
 chron = pygame.time.Clock()
@@ -632,6 +636,19 @@ def eventLoop():
                 client.send('quit\n')
                 chron.tick(10)
                 exit(0)
+            elif event.type == pygame.JOYBUTTONDOWN:
+                if event.button == joyMap.START:
+                    expandMainMenu = not expandMainMenu
+                    if not expandMainMenu:
+                        animations['mm_expand'].reverse = True
+                    else:
+                        animations['mm_expand'].reverse = False
+            elif event.type == pygame.JOYAXISMOTION:
+                rStickVec = Vec2d(controller.get_axis(joyMap.RIGHT_X), controller.get_axis(joyMap.RIGHT_Y))
+                lStickVec = Vec2d(controller.get_axis(joyMap.LEFT_X), controller.get_axis(joyMap.LEFT_Y))
+                rAngle = rStickVec.get_angle_degrees()
+                lAngle = lStickVec.get_angle_degrees()
+                print rAngle # TODO fix
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
