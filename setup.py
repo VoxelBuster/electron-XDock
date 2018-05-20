@@ -10,10 +10,10 @@ REQUIRES_PYTHON = '>=2.7.1'
 VERSION = 'RC-0.2'
 
 setup(name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
-    author=AUTHOR,
-    author_email=EMAIL,
-    python_requires=REQUIRES_PYTHON,
-    url=URL,
-    console=['electronUI.py'])
+      version=VERSION,
+      description=DESCRIPTION,
+      author=AUTHOR,
+      author_email=EMAIL,
+      python_requires=REQUIRES_PYTHON,
+      url=URL,
+      console=['electronUI.py'], requires=['pygame', 'pymunk'])

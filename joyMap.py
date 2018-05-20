@@ -14,10 +14,13 @@ RSTICK = 9
 # axes
 LEFT_X = 0
 LEFT_Y = 1
-L_TRIGGER = 2
-R_TRIGGER = 3
-RIGHT_X = 4
-RIGHT_Y = 5
+# L_TRIGGER = 2
+# R_TRIGGER = 3 it seems these are one axis
+TRIGGER = 2
+# RIGHT_X = 4
+# RIGHT_Y = 5
+RIGHT_X = 3
+RIGHT_Y = 4
 
 # hats
 DPAD = 0

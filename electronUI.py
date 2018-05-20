@@ -33,8 +33,11 @@ assetLoader.readSettings()
 
 display = None
 
-controller = pygame.joystick.Joystick(0)
-controller.init()
+try:
+    controller = pygame.joystick.Joystick(0)
+    controller.init()
+except:
+    print 'Failed to connect a controller'
 
 info = pygame.display.Info()
 chron = pygame.time.Clock()
@@ -336,11 +339,14 @@ totalScroll = 0
 scrollOffset = 0
 scrollMenuClick = False
 
+mmSelectedByController = [False] * 5
+
 searchStr = ''
+amplitudeSmoothList = [0] * appSettings.visualizerResolution
 
 # REALLY BAD CODING PAST THIS POINT
 def draw():
-    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick
+    global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick, amplitudeSmoothList
     # dirtyRegions = []
     if appSettings.useBgImage:
         if appSettings.useWinBg and winBg is not None:
@@ -363,11 +369,13 @@ def draw():
                 visCenter = voxMath.centerObject(pygame.Rect(0,0,0,0), pygame.Rect(0,0,visSurf.get_width(),visSurf.get_height()))
                 thetaInterval = 360.0 / len(samples)
                 for i in range(len(samples)):
-                    amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen
-                    if i < len(samples) - 2 and math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i + 1, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen >= amplitude * 3:
-                        amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i + 1, appSettings.amplitudeAverageDepth))) / (appSettings.amplitudeDampen * 2)
-                    elif i > 0 and math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i - 1, appSettings.amplitudeAverageDepth))) / appSettings.amplitudeDampen >= amplitude * 3:
-                        amplitude = math.sqrt(voxMath.avg(*voxMath.getAdjacentItems(samples, i - 1, appSettings.amplitudeAverageDepth))) / (appSettings.amplitudeDampen * 2)
+                    if amplitudeSmoothList[i] > 0:
+                        amplitudeSmoothList[i] -= 6
+                    amplitude = voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth)) / appSettings.amplitudeDampen
+                    if amplitude > amplitudeSmoothList[i]:
+                        amplitudeSmoothList[i] = amplitude
+                    else:
+                        amplitude = amplitudeSmoothList[i]
                     if math.floor(amplitude) < 3:
                         continue # If its just a nub, dont bother
                     vec = Vec2d(centercircle.get_width() / 2, 0)
@@ -439,7 +447,7 @@ def draw():
                 exit_icon.get_width() * float(animations['mm_expand'].getCurrentFrame()) / 10.0)
         tempPt = (centerScreen[0] - (exit_icon.get_width() / 2), centerScreen[1] + centerRadius)
         exitRect = pygame.Rect(tempPt[0], tempPt[1], exit_icon.get_width(), exit_icon.get_height())
-        if exitRect.collidepoint(pygame.mouse.get_pos()):
+        if exitRect.collidepoint(pygame.mouse.get_pos())  or mmSelectedByController[2]:
             animations['mm_icon_exit'].reset()
             animations['mm_icon_enter'].advance()
             alphaHl = 255 * float(animations['mm_icon_enter'].getCurrentFrame()) / 15.0
@@ -454,7 +462,7 @@ def draw():
         refVec.rotate_degrees(90)
         tempPt = (centerScreen[0] + int(refVec.x) - game_icon.get_width(), centerScreen[1] - game_icon.get_width() / 2)
         gamesRect = pygame.Rect(tempPt[0], tempPt[1], game_icon.get_width(), game_icon.get_height())
-        if gamesRect.collidepoint(pygame.mouse.get_pos()):
+        if gamesRect.collidepoint(pygame.mouse.get_pos()) or mmSelectedByController[0]:
             animations['mm_icon_exit2'].reset()
             animations['mm_icon_enter2'].advance()
             alphaHl2 = 255 * float(animations['mm_icon_enter2'].getCurrentFrame()) / 15.0
@@ -468,7 +476,7 @@ def draw():
         refVec.rotate_degrees(-45)
         tempPt = (centerScreen[0] + int(refVec.x) - gear_icon.get_width(), centerScreen[1] + int(refVec.y))
         gearRect = pygame.Rect(tempPt[0], tempPt[1], gear_icon.get_width(), gear_icon.get_height())
-        if gearRect.collidepoint(pygame.mouse.get_pos()):
+        if gearRect.collidepoint(pygame.mouse.get_pos())  or mmSelectedByController[1]:
             animations['mm_icon_exit3'].reset()
             animations['mm_icon_enter3'].advance()
             alphaHl3 = 255 * float(animations['mm_icon_enter3'].getCurrentFrame()) / 15.0
@@ -482,7 +490,7 @@ def draw():
         refVec.rotate_degrees(-90)
         tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y))
         powerRect = pygame.Rect(tempPt[0], tempPt[1], power_icon.get_width(), power_icon.get_height())
-        if powerRect.collidepoint(pygame.mouse.get_pos()):
+        if powerRect.collidepoint(pygame.mouse.get_pos())  or mmSelectedByController[3]:
             animations['mm_icon_exit4'].reset()
             animations['mm_icon_enter4'].advance()
             alphaHl4 = 255 * float(animations['mm_icon_enter4'].getCurrentFrame()) / 15.0
@@ -496,7 +504,7 @@ def draw():
         refVec.rotate_degrees(-45)
         tempPt = (centerScreen[0] + int(refVec.x), centerScreen[1] + int(refVec.y) - search_icon.get_height() / 2)
         searchRect = pygame.Rect(tempPt[0], tempPt[1], search_icon.get_width(), search_icon.get_height())
-        if searchRect.collidepoint(pygame.mouse.get_pos()):
+        if searchRect.collidepoint(pygame.mouse.get_pos())  or mmSelectedByController[4]:
             animations['mm_icon_exit5'].reset()
             animations['mm_icon_enter5'].advance()
             alphaHl5 = 255 * float(animations['mm_icon_enter5'].getCurrentFrame()) / 15.0
@@ -628,7 +636,7 @@ running = True
 
 def eventLoop():
     global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, channelLabel, needRestart, \
-        selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset, searchStr
+        selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset, searchStr, mmSelectedByController
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -648,7 +656,26 @@ def eventLoop():
                 lStickVec = Vec2d(controller.get_axis(joyMap.LEFT_X), controller.get_axis(joyMap.LEFT_Y))
                 rAngle = rStickVec.get_angle_degrees()
                 lAngle = lStickVec.get_angle_degrees()
-                print rAngle # TODO fix
+                if -90 <= lAngle < -54:
+                    mmSelectedByController[0] = True
+                else:
+                    mmSelectedByController[0] = False
+                if -54 <= lAngle < -18:
+                    mmSelectedByController[1] = True
+                else:
+                    mmSelectedByController[1] = False
+                if -18 <= lAngle < 18:
+                    mmSelectedByController[2] = True
+                else:
+                    mmSelectedByController[2] = False
+                if 18 <= lAngle < 54:
+                    mmSelectedByController[3] = True
+                else:
+                    mmSelectedByController[3] = False
+                if 54 <= lAngle < 90:
+                    mmSelectedByController[4] = True
+                else:
+                    mmSelectedByController[4] = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_F4 and pygame.key.get_mods() & pygame.KMOD_ALT:
                     pygame.event.post(pygame.event.Event(pygame.QUIT, {}))  # Triggers a quit event with alt-f4
