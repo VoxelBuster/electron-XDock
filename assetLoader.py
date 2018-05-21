@@ -2,6 +2,7 @@ import pygame
 import appSettings
 import json
 import os
+import re
 
 pygame.init()
 
@@ -90,6 +91,7 @@ def writeOutSettings():
     obj['visualizerAlpha'] = appSettings.visualizerAlpha
     obj['visualizerPlacement'] = appSettings.visualizerPlacement
     obj['visualizerColor'] = appSettings.visualizerColor
+    obj['amplitudeDampenRadial'] = appSettings.amplitudeDampenRadial
     json.dump(obj, open(appSettings.dataDir + 'appSettings.json', 'w+'))
 
 
@@ -120,6 +122,18 @@ def readSettings():
             appSettings.visualizerAlpha = obj['visualizerAlpha']
             appSettings.visualizerPlacement = obj['visualizerPlacement']
             appSettings.visualizerColor = obj['visualizerColor']
+            appSettings.amplitudeDampenRadial = obj['amplitudeDampenRadial']
     except Exception as e:
         print e
         os.remove(appSettings.dataDir + 'appSettings.json')
+
+def readPathsFiles():
+    try:
+        if os.path.exists(appSettings.dataDir + 'gamesPaths.txt'):
+            f = open(appSettings.dataDir + 'gamesPaths.txt', 'r')
+            appSettings.gamesPaths.extend(re.compile('(\r\n|\r|\n)').split(f.read()))
+        if os.path.exists(appSettings.dataDir + 'appPaths.txt'):
+            f = open(appSettings.dataDir + 'appPaths.txt', 'r')
+            appSettings.appPaths.extend(re.compile('(\r\n|\r|\n)').split(f.read()))
+    except Exception as e:
+        print e

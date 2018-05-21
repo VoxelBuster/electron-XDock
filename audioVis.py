@@ -3,7 +3,7 @@
 
 import pyaudio as pa
 import numpy as np
-import notes_noscaled_nosaturation
+import audioAnalysis
 
 import appSettings
 
@@ -45,7 +45,7 @@ def read_audio(audio, num_samples):
 
 def visualizeAudio():
     audio = read_audio(audio_stream, num_samples=appSettings.visualizerResolution)
-    return notes_noscaled_nosaturation.fft(audio)
+    return audioAnalysis.fft(audio)
 
 if __name__ == '__main__':
     init()

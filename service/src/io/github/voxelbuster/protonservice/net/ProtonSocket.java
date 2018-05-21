@@ -53,17 +53,7 @@ public class ProtonSocket {
                             } else if (msg.equals("quit")) {
                                 Debug.log("Client requested service shutdown...");
                                 socket.close();
-                            } /*else if (msg.contains("edit_fgScale_pref")) {
-                                new Thread(() -> {
-                                    String prefEdit = JOptionPane.showInputDialog(null, "Foreground Scale Factor", "Edit Preference", JOptionPane.QUESTION_MESSAGE);
-                                    try {
-                                        float f = Float.parseFloat(prefEdit);
-                                        outBuffer.add("fgScale;" + f);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }).start();
-                            }*/ // No longer used. Scale presets are used instead.
+                            }
                         }
                     } catch (Exception e) {
                         Debug.error("Exception in service input thread:");

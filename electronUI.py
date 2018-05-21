@@ -30,6 +30,7 @@ audioVis.init(appSettings.visualizerChannel)
 
 print 'Reading app settings file'
 assetLoader.readSettings()
+assetLoader.readPathsFiles()
 
 display = None
 
@@ -161,12 +162,14 @@ def updateClient():
             continue
         elif 'smPaths' in items[j]:
             smPaths = json.loads(items[j + 1])['paths']
+            smPaths.extend(appSettings.appPaths)
             for path in smPaths:
                 for directory, subdirs, files in os.walk(path):
                     for filename in files:
                         shortcuts.append(os.path.join(path, directory, filename))
         elif 'gamePaths' in items[j]:
             gamePaths = json.loads(items[j + 1])['paths']
+            gamePaths.extend(appSettings.gamesPaths)
             for path in gamePaths:
                 for directory, subdirs, files in os.walk(path):
                     for filename in files:
@@ -323,6 +326,23 @@ restartLabel = pygame.transform.smoothscale(restartLabel,
                                             (int(appSettings.screenRatio * restartLabel.get_width()),
                                              int(appSettings.screenRatio * restartLabel.get_height())))
 
+placementStr = 'MV Placement: '
+if appSettings.visualizerPlacement == 1:
+    placementStr += 'Bottom'
+elif appSettings.visualizerPlacement == 2:
+    placementStr += 'Top'
+else:
+    placementStr += 'Center'
+visPlacementLabel = assetLoader.fontsMap['monospace'].render(placementStr, 1, voxMath.hexToRGB(appSettings.themeColor))
+visPlacementLabel = pygame.transform.smoothscale(visPlacementLabel,
+                                            (int(appSettings.screenRatio * visPlacementLabel.get_width()),
+                                             int(appSettings.screenRatio * visPlacementLabel.get_height())))
+
+visResLabel = assetLoader.fontsMap['monospace'].render('MV Resolution: ' + str(appSettings.visualizerResolution), 1, voxMath.hexToRGB(appSettings.themeColor))
+visResLabel = pygame.transform.smoothscale(visResLabel,
+                                            (int(appSettings.screenRatio * visResLabel.get_width()),
+                                             int(appSettings.screenRatio * visResLabel.get_height())))
+
 expandMainMenu = False
 showSettings = False
 
@@ -342,9 +362,10 @@ scrollMenuClick = False
 mmSelectedByController = [False] * 5
 
 searchStr = ''
-amplitudeSmoothList = [0] * appSettings.visualizerResolution
+amplitudeSmoothList = [0] * max(constants.visualizerResList)
 
 # REALLY BAD CODING PAST THIS POINT
+# noinspection PyArgumentList
 def draw():
     global initialFrame, exitRect, gamesRect, searchRect, gearRect, powerRect, showSettings, timeSurf, scrollDelta, scrollOffset, totalScroll, scrollMenuClick, amplitudeSmoothList
     # dirtyRegions = []
@@ -371,7 +392,7 @@ def draw():
                 for i in range(len(samples)):
                     if amplitudeSmoothList[i] > 0:
                         amplitudeSmoothList[i] -= 6
-                    amplitude = voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth)) / appSettings.amplitudeDampen
+                    amplitude = voxMath.avg(*voxMath.getAdjacentItems(samples, i, appSettings.amplitudeAverageDepth)) / appSettings.amplitudeDampenRadial
                     if amplitude > amplitudeSmoothList[i]:
                         amplitudeSmoothList[i] = amplitude
                     else:
@@ -529,7 +550,6 @@ def draw():
         useBgRect = pygame.Rect(0, 0, useBgImgLabel.get_width(), useBgImgLabel.get_height())
         hwAccelRect = pygame.Rect(0, 0, hwAccelLabel.get_width(), hwAccelLabel.get_height())
         showFPSRect = pygame.Rect(0, 0, showFPSLabel.get_width(), showFPSLabel.get_height())
-        fgScaleRect = pygame.Rect(0, 0, fgScaleLabel.get_width(), fgScaleLabel.get_height())
         visRect = pygame.Rect(0, 0, visLabel.get_width(), visLabel.get_height())
         cbRect = pygame.Rect(0, 0, cb_checked.get_width(), cb_checked.get_height())
         if appSettings.time12Hr:
@@ -554,6 +574,8 @@ def draw():
         s.blit(showFPSLabel, (25, 465))
         s.blit(visLabel, (25, 520))
         s.blit(channelLabel, (25, 575))
+        s.blit(visPlacementLabel, (25, 630))
+        s.blit(visResLabel, (25, 685))
         if appSettings.hwAccel:
             s.blit(cb_checked,
                    (25 + hwAccelLabel.get_width() + 20, voxMath.alignVertCenters(hwAccelRect, cbRect) + 355))
@@ -634,9 +656,12 @@ def render():
 
 running = True
 
+
+# noinspection PyArgumentList
 def eventLoop():
     global expandMainMenu, showSettings, timeSurf, hour, minute, timeStr, fgScaleLabel, channelLabel, needRestart, \
-        selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset, searchStr, mmSelectedByController
+        selectWheelItems, selectWheelContext, scrollDelta, scrollMenuClick, selectWheelCommands, scrollOffset, searchStr, \
+        mmSelectedByController, visPlacementLabel, visResLabel
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -805,6 +830,44 @@ def eventLoop():
                             appSettings.visualizerChannel = 0
                         audioVis.init(appSettings.visualizerChannel)
                         assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 630, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        appSettings.visualizerPlacement += 1
+                        if appSettings.visualizerPlacement > 2:
+                            appSettings.visualizerPlacement = 0
+                        placementStr = 'MV Placement: '
+                        if appSettings.visualizerPlacement == 1:
+                            placementStr += 'Bottom'
+                        elif appSettings.visualizerPlacement == 2:
+                            placementStr += 'Top'
+                        else:
+                            placementStr += 'Center'
+                        visPlacementLabel = assetLoader.fontsMap['monospace'].render(placementStr, 1, voxMath.hexToRGB(
+                            appSettings.themeColor))
+                        visPlacementLabel = pygame.transform.smoothscale(visPlacementLabel,
+                                                                         (int(
+                                                                             appSettings.screenRatio * visPlacementLabel.get_width()),
+                                                                          int(
+                                                                              appSettings.screenRatio * visPlacementLabel.get_height())))
+                        assetLoader.writeOutSettings()
+                    rowRect = pygame.Rect(settingsXY[0], 685, display.get_width() / 4, 45)
+                    if rowRect.collidepoint(pygame.mouse.get_pos()):
+                        for i in constants.visualizerResList:
+                            if appSettings.visualizerResolution == constants.visualizerResList[len(constants.visualizerResList) - 1]:
+                                appSettings.visualizerResolution = constants.visualizerResList[0]
+                                break
+                            if appSettings.visualizerResolution < i:
+                                appSettings.visualizerResolution = i
+                                break
+                        assetLoader.writeOutSettings()
+                        visResLabel = assetLoader.fontsMap['monospace'].render(
+                            'MV Resolution: ' + str(appSettings.visualizerResolution), 1,
+                            voxMath.hexToRGB(appSettings.themeColor))
+                        visResLabel = pygame.transform.smoothscale(visResLabel,
+                                                                   (int(
+                                                                       appSettings.screenRatio * visResLabel.get_width()),
+                                                                    int(
+                                                                        appSettings.screenRatio * visResLabel.get_height())))
         updateClient()
         if appSettings.time12Hr:
             hour = datetime.now().hour % 12
