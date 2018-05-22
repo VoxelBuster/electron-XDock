@@ -4,10 +4,12 @@ import os
 import re
 import socket
 import subprocess
+import time
 from datetime import datetime
 
 import pygame
 from pymunk.vec2d import Vec2d
+import thread
 
 import animation
 import appSettings
@@ -18,8 +20,12 @@ import joyMap
 import voxMath
 import audioVis
 
+
 print 'Starting protonService'
-os.system('.\\service\\protonService')
+thread.start_new_thread(os.system, ('.\\service\\protonService',))
+
+print 'Waiting for service thread...'
+time.sleep(1)
 
 # preset window position -- borderless fullscreen
 winx, winy = 0, 0
@@ -613,6 +619,9 @@ def draw():
             totalScroll -= 2
             scrollOffset += 2
         distanceFromCenterY = scrollOffset + gradSpacing * idx
+        if scrollOffset > 0:
+            scrollOffset = 0
+
         if distanceFromCenterY + centerY > display.get_height() or distanceFromCenterY + centerY < 0:
             continue # don't draw stuff that isnt on the screen
         itemSurf = gradients.horizontal((gradRect.width, gradRect.height), voxMath.addAlphaChannel(accentRgb, 0),
